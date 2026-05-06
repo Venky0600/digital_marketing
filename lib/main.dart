@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:device_preview/device_preview.dart';
+//add_device_preview
 import 'providers/app_provider.dart';
 import 'screens/splash_screen.dart';
 import 'screens/onboarding_screen.dart';
@@ -15,9 +17,12 @@ void main() {
     DeviceOrientation.portraitDown,
   ]);
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => AppProvider(),
-      child: const BrandBridgeApp(),
+    DevicePreview(
+      enabled: !const bool.fromEnvironment('dart.vm.product'),
+      builder: (context) => ChangeNotifierProvider(
+        create: (_) => AppProvider(),
+        child: const BrandBridgeApp(),
+      ),
     ),
   );
 }
