@@ -69,7 +69,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                           border: Border.all(color: Colors.white.withOpacity(0.4), width: 2),
                         ),
                         child: const Center(
-                          child: Text('BB', style: TextStyle(
+                          child: Text('DM', style: TextStyle(
                             color: Colors.white, fontSize: 42,
                             fontWeight: FontWeight.w900, letterSpacing: -2)),
                         ),
@@ -83,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
                   child: FadeTransition(
                     opacity: _textOpacity,
                     child: Column(children: [
-                      Text('BrandBridge', style: GoogleFonts.poppins(
+                      Text('DIGITAL_MARKETING', style: GoogleFonts.poppins(
                         fontSize: 36, fontWeight: FontWeight.w800,
                         color: Colors.white, letterSpacing: -0.5)),
                       const SizedBox(height: 6),

@@ -1,3 +1,4 @@
+import 'package:betterdigital/screens/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,121 @@ class HomeScreen extends StatelessWidget {
         : const LinearGradient(colors: [Color(0xFFAB47BC), Color(0xFF7B1FA2)]);
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0F1426) : const Color(0xFFF4F5FA),
+      endDrawer: Drawer(
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(30),
+            bottomLeft: Radius.circular(30),
+          ),
+        ),
+        child: Container(
+          color: const Color(0xffF4F5FA),
+          child: Column(
+            children: [
+              /// TOP PROFILE
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.only(
+                  top: 70,
+                  left: 20,
+                  right: 20,
+                  bottom: 30,
+                ),
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color(0xff5C6BC0),
+                      Color(0xff3949AB),
+                    ],
+                  ),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(30),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const CircleAvatar(
+                      radius: 35,
+                      backgroundColor: Colors.white,
+                      child: Icon(
+                        Icons.person,
+                        size: 40,
+                        color: Color(0xff5C6BC0),
+                      ),
+                    ),
+                    SizedBox(height: 15),
+                    Text(
+                      user?.name ?? "User",
+                      style: GoogleFonts.poppins(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: 5),
+                    Text(
+                      user?.company ?? "No Company",
+                      style: GoogleFonts.poppins(
+                        color: Colors.white70,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 20),
+
+              drawerTile(
+                icon: Icons.person_outline,
+                title: "Profile",
+                onTap: () {},
+              ),
+
+              drawerTile(
+                icon: Icons.settings_outlined,
+                title: "Settings",
+                onTap: () {},
+              ),
+
+              drawerTile(
+                icon: Icons.support_agent,
+                title: "Helpline",
+                onTap: () {},
+              ),
+
+              drawerTile(
+                icon: Icons.logout,
+                title: "Logout",
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const LoginScreen(),
+                    ),
+                    (route) => false,
+                  );
+                },
+              ),
+
+              const Spacer(),
+
+              const Padding(
+                padding: EdgeInsets.only(bottom: 20),
+                child: Text(
+                  "BrandBridge v1.0",
+                  style: TextStyle(
+                    color: Colors.grey,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+      backgroundColor:
+          isDark ? const Color(0xFF0F1426) : const Color(0xFFF4F5FA),
       body: CustomScrollView(
         slivers: [
           // Hero AppBar
@@ -33,22 +148,35 @@ class HomeScreen extends StatelessWidget {
             expandedHeight: 180,
             floating: false,
             pinned: true,
-            backgroundColor: isBO ? const Color(0xFF3949AB) : const Color(0xFF7B1FA2),
+            backgroundColor:
+                isBO ? const Color(0xFF3949AB) : const Color(0xFF7B1FA2),
             automaticallyImplyLeading: false,
             actions: [
               IconButton(
-                onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const NotificationsScreen())),
+                onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (_) => const NotificationsScreen())),
                 icon: Stack(
                   clipBehavior: Clip.none,
                   children: [
-                    const Icon(Icons.notifications_outlined, color: Colors.white, size: 26),
+                    const Icon(Icons.notifications_outlined,
+                        color: Colors.white, size: 26),
                     if (unread > 0)
                       Positioned(
-                        right: -2, top: -2,
+                        right: -2,
+                        top: -2,
                         child: Container(
-                          width: 16, height: 16,
-                          decoration: const BoxDecoration(color: Color(0xFFFF6B6B), shape: BoxShape.circle),
-                          child: Center(child: Text('$unread', style: const TextStyle(color: Colors.white, fontSize: 9, fontWeight: FontWeight.bold))),
+                          width: 16,
+                          height: 16,
+                          decoration: const BoxDecoration(
+                              color: Color(0xFFFF6B6B), shape: BoxShape.circle),
+                          child: Center(
+                              child: Text('$unread',
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 9,
+                                      fontWeight: FontWeight.bold))),
                         ),
                       ),
                   ],
@@ -71,12 +199,21 @@ class HomeScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(isBO ? 'Business Dashboard 🏢' : 'Creator Hub 📸',
-                      style: GoogleFonts.poppins(color: Colors.white70, fontSize: 13)),
+                        style: GoogleFonts.poppins(
+                            color: Colors.white70, fontSize: 13)),
                     Text(user?.name ?? 'Welcome!',
-                      style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 22)),
+                        style: GoogleFonts.poppins(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w800,
+                            fontSize: 22)),
                     const SizedBox(height: 4),
-                    Text(isBO ? 'Manage campaigns & find influencers' : 'Discover campaigns & grow your brand',
-                      style: TextStyle(color: Colors.white.withOpacity(0.7), fontSize: 12)),
+                    Text(
+                        isBO
+                            ? 'Manage campaigns & find influencers'
+                            : 'Discover campaigns & grow your brand',
+                        style: TextStyle(
+                            color: Colors.white.withOpacity(0.7),
+                            fontSize: 12)),
                   ],
                 ),
               ),
@@ -89,7 +226,8 @@ class HomeScreen extends StatelessWidget {
               delegate: SliverChildListDelegate([
                 // Stats row
                 Row(children: [
-                  Expanded(child: StatsCard(
+                  Expanded(
+                      child: StatsCard(
                     label: 'Influencers',
                     value: '${provider.influencers.length}',
                     icon: Icons.people_rounded,
@@ -98,7 +236,8 @@ class HomeScreen extends StatelessWidget {
                     isDark: isDark,
                   )),
                   const SizedBox(width: 10),
-                  Expanded(child: StatsCard(
+                  Expanded(
+                      child: StatsCard(
                     label: 'Campaigns',
                     value: '${provider.campaigns.length}',
                     icon: Icons.campaign_rounded,
@@ -109,7 +248,8 @@ class HomeScreen extends StatelessWidget {
                 ]),
                 const SizedBox(height: 10),
                 Row(children: [
-                  Expanded(child: StatsCard(
+                  Expanded(
+                      child: StatsCard(
                     label: 'Total Reach',
                     value: _formatNumber(provider.totalReach),
                     icon: Icons.bar_chart_rounded,
@@ -118,7 +258,8 @@ class HomeScreen extends StatelessWidget {
                     isDark: isDark,
                   )),
                   const SizedBox(width: 10),
-                  Expanded(child: StatsCard(
+                  Expanded(
+                      child: StatsCard(
                     label: 'Revenue',
                     value: '₹${_formatNumber(provider.mockEarnings.toInt())}',
                     icon: Icons.account_balance_wallet_rounded,
@@ -131,19 +272,30 @@ class HomeScreen extends StatelessWidget {
                 const SizedBox(height: 20),
 
                 // Quick Actions
-                Text('Quick Actions', style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w700, fontSize: 17,
-                  color: isDark ? Colors.white : const Color(0xFF1A1A2E))),
+                Text('Quick Actions',
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 17,
+                        color:
+                            isDark ? Colors.white : const Color(0xFF1A1A2E))),
                 const SizedBox(height: 12),
                 Row(children: [
                   _quickAction(context, '🤖', 'AI Matchmaking', isDark,
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MatchmakingScreen()))),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const MatchmakingScreen()))),
                   const SizedBox(width: 10),
                   _quickAction(context, '💬', 'Messages', isDark,
-                    onTap: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MockChatScreen()))),
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const MockChatScreen()))),
                   const SizedBox(width: 10),
                   _quickAction(context, '📊', 'Analytics', isDark,
-                    onTap: () => ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Analytics coming soon!')))),
+                      onTap: () => ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                              content: Text('Analytics coming soon!')))),
                 ]),
 
                 const SizedBox(height: 20),
@@ -152,65 +304,102 @@ class HomeScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Recent Campaigns', style: GoogleFonts.poppins(
-                      fontWeight: FontWeight.w700, fontSize: 17,
-                      color: isDark ? Colors.white : const Color(0xFF1A1A2E))),
+                    Text('Recent Campaigns',
+                        style: GoogleFonts.poppins(
+                            fontWeight: FontWeight.w700,
+                            fontSize: 17,
+                            color: isDark
+                                ? Colors.white
+                                : const Color(0xFF1A1A2E))),
                     TextButton(
                       onPressed: () {},
-                      child: const Text('See All', style: TextStyle(color: Color(0xFF5C6BC0), fontSize: 13)),
+                      child: const Text('See All',
+                          style: TextStyle(
+                              color: Color(0xFF5C6BC0), fontSize: 13)),
                     ),
                   ],
                 ),
                 ...provider.campaigns.take(3).map((c) => Container(
-                  margin: const EdgeInsets.only(bottom: 10),
-                  padding: const EdgeInsets.all(14),
-                  decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF1E2746) : Colors.white,
-                    borderRadius: BorderRadius.circular(14),
-                    boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8, offset: const Offset(0, 2))],
-                  ),
-                  child: Row(children: [
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: Image.network(c.logoUrl, width: 44, height: 44, fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => Container(width: 44, height: 44,
-                          color: const Color(0xFF5C6BC0).withOpacity(0.2),
-                          child: const Icon(Icons.business, color: Color(0xFF5C6BC0)))),
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                      Text(c.title, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13,
-                        color: isDark ? Colors.white : const Color(0xFF1A1A2E))),
-                      Text(c.businessName, style: const TextStyle(fontSize: 11, color: Colors.grey)),
-                    ])),
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      margin: const EdgeInsets.only(bottom: 10),
+                      padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        color: c.status.displayName == 'Open'
-                          ? const Color(0xFF4CAF50).withOpacity(0.1)
-                          : const Color(0xFFFFB347).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(8),
+                        color: isDark ? const Color(0xFF1E2746) : Colors.white,
+                        borderRadius: BorderRadius.circular(14),
+                        boxShadow: [
+                          BoxShadow(
+                              color: Colors.black.withOpacity(0.05),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2))
+                        ],
                       ),
-                      child: Text(c.status.displayName,
-                        style: TextStyle(
-                          color: c.status.displayName == 'Open' ? const Color(0xFF4CAF50) : const Color(0xFFFFB347),
-                          fontSize: 11, fontWeight: FontWeight.w600)),
-                    ),
-                  ]),
-                )),
+                      child: Row(children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: Image.network(c.logoUrl,
+                              width: 44,
+                              height: 44,
+                              fit: BoxFit.cover,
+                              errorBuilder: (_, __, ___) => Container(
+                                  width: 44,
+                                  height: 44,
+                                  color:
+                                      const Color(0xFF5C6BC0).withOpacity(0.2),
+                                  child: const Icon(Icons.business,
+                                      color: Color(0xFF5C6BC0)))),
+                        ),
+                        const SizedBox(width: 12),
+                        Expanded(
+                            child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                              Text(c.title,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 13,
+                                      color: isDark
+                                          ? Colors.white
+                                          : const Color(0xFF1A1A2E))),
+                              Text(c.businessName,
+                                  style: const TextStyle(
+                                      fontSize: 11, color: Colors.grey)),
+                            ])),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 8, vertical: 4),
+                          decoration: BoxDecoration(
+                            color: c.status.displayName == 'Open'
+                                ? const Color(0xFF4CAF50).withOpacity(0.1)
+                                : const Color(0xFFFFB347).withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(c.status.displayName,
+                              style: TextStyle(
+                                  color: c.status.displayName == 'Open'
+                                      ? const Color(0xFF4CAF50)
+                                      : const Color(0xFFFFB347),
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600)),
+                        ),
+                      ]),
+                    )),
 
                 const SizedBox(height: 20),
 
                 // Top Influencers
-                Text('Top Influencers', style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w700, fontSize: 17,
-                  color: isDark ? Colors.white : const Color(0xFF1A1A2E))),
+                Text('Top Influencers',
+                    style: GoogleFonts.poppins(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 17,
+                        color:
+                            isDark ? Colors.white : const Color(0xFF1A1A2E))),
                 const SizedBox(height: 12),
                 SizedBox(
                   height: 120,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
-                    itemCount: provider.influencers.length > 6 ? 6 : provider.influencers.length,
+                    itemCount: provider.influencers.length > 6
+                        ? 6
+                        : provider.influencers.length,
                     separatorBuilder: (_, __) => const SizedBox(width: 10),
                     itemBuilder: (_, i) {
                       final inf = provider.influencers[i];
@@ -218,26 +407,49 @@ class HomeScreen extends StatelessWidget {
                         width: 90,
                         padding: const EdgeInsets.all(10),
                         decoration: BoxDecoration(
-                          color: isDark ? const Color(0xFF1E2746) : Colors.white,
+                          color:
+                              isDark ? const Color(0xFF1E2746) : Colors.white,
                           borderRadius: BorderRadius.circular(14),
-                          boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 6)],
+                          boxShadow: [
+                            BoxShadow(
+                                color: Colors.black.withOpacity(0.05),
+                                blurRadius: 6)
+                          ],
                         ),
-                        child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                          Stack(children: [
-                            CircleAvatar(radius: 26, backgroundImage: NetworkImage(inf.profileImageUrl),
-                              onBackgroundImageError: (_, __) {}),
-                            if (inf.isVerified)
-                              Positioned(bottom: 0, right: 0, child: Container(
-                                padding: const EdgeInsets.all(2),
-                                decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle),
-                                child: const Icon(Icons.verified, color: Color(0xFF5C6BC0), size: 11),
-                              )),
-                          ]),
-                          const SizedBox(height: 6),
-                          Text(inf.name.split(' ').first, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11,
-                            color: isDark ? Colors.white : const Color(0xFF1A1A2E))),
-                          Text(inf.followersFormatted, style: const TextStyle(fontSize: 10, color: Colors.grey)),
-                        ]),
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Stack(children: [
+                                CircleAvatar(
+                                    radius: 26,
+                                    backgroundImage:
+                                        NetworkImage(inf.profileImageUrl),
+                                    onBackgroundImageError: (_, __) {}),
+                                if (inf.isVerified)
+                                  Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(2),
+                                        decoration: const BoxDecoration(
+                                            color: Colors.white,
+                                            shape: BoxShape.circle),
+                                        child: const Icon(Icons.verified,
+                                            color: Color(0xFF5C6BC0), size: 11),
+                                      )),
+                              ]),
+                              const SizedBox(height: 6),
+                              Text(inf.name.split(' ').first,
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 11,
+                                      color: isDark
+                                          ? Colors.white
+                                          : const Color(0xFF1A1A2E))),
+                              Text(inf.followersFormatted,
+                                  style: const TextStyle(
+                                      fontSize: 10, color: Colors.grey)),
+                            ]),
                       );
                     },
                   ),
@@ -247,7 +459,10 @@ class HomeScreen extends StatelessWidget {
 
                 GradientButton(
                   label: '🤖 Run AI Matchmaking',
-                  onPressed: () => Navigator.push(context, MaterialPageRoute(builder: (_) => const MatchmakingScreen())),
+                  onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const MatchmakingScreen())),
                   icon: Icons.auto_awesome,
                 ),
                 const SizedBox(height: 80),
@@ -259,7 +474,9 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  Widget _quickAction(BuildContext context, String emoji, String label, bool isDark, {required VoidCallback onTap}) {
+  Widget _quickAction(
+      BuildContext context, String emoji, String label, bool isDark,
+      {required VoidCallback onTap}) {
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
@@ -268,13 +485,22 @@ class HomeScreen extends StatelessWidget {
           decoration: BoxDecoration(
             color: isDark ? const Color(0xFF1E2746) : Colors.white,
             borderRadius: BorderRadius.circular(14),
-            boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 8, offset: const Offset(0, 2))],
+            boxShadow: [
+              BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 8,
+                  offset: const Offset(0, 2))
+            ],
           ),
           child: Column(children: [
             Text(emoji, style: const TextStyle(fontSize: 24)),
             const SizedBox(height: 4),
-            Text(label, style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white70 : Colors.black54), textAlign: TextAlign.center),
+            Text(label,
+                style: TextStyle(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? Colors.white70 : Colors.black54),
+                textAlign: TextAlign.center),
           ]),
         ),
       ),
@@ -286,4 +512,37 @@ class HomeScreen extends StatelessWidget {
     if (n >= 1000) return '${(n / 1000).toStringAsFixed(1)}K';
     return n.toString();
   }
+}
+
+Widget drawerTile({
+  required IconData icon,
+  required String title,
+  required VoidCallback onTap,
+}) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(
+      horizontal: 12,
+      vertical: 5,
+    ),
+    child: ListTile(
+      onTap: onTap,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(18),
+      ),
+      leading: Icon(
+        icon,
+        color: const Color(0xff5C6BC0),
+      ),
+      title: Text(
+        title,
+        style: GoogleFonts.poppins(
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+      trailing: const Icon(
+        Icons.arrow_forward_ios,
+        size: 16,
+      ),
+    ),
+  );
 }

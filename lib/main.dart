@@ -145,7 +145,7 @@ class BrandBridgeApp extends StatelessWidget {
         ),
       ),
 
-      // ── Routes ──────────────────────────────────────────────────────────
+    
       initialRoute: '/splash',
       routes: {
         '/splash': (_) => const SplashScreen(),
