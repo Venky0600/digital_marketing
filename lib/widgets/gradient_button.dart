@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-
-// ──────────────────────────────────────────────────────────────────────────────
-// Color palette & gradient constants shared across the app
-// ──────────────────────────────────────────────────────────────────────────────
 class AppColors {
   static const primary = Color(0xFF5C6BC0);
   static const accent = Color(0xFFFF6B6B);

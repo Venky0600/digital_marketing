@@ -209,8 +209,6 @@ class AppProvider extends ChangeNotifier {
     ));
     notifyListeners();
   }
-
-  // --- AI Chat Messages ---
   List<AiChatMessage> _aiMessages = [];
   List<AiChatMessage> get aiMessages => List.unmodifiable(_aiMessages);
 
@@ -329,6 +327,5 @@ class AppProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // --- Generate new ID ---
   String generateId() => _uuid.v4();
 }

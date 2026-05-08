@@ -4,10 +4,6 @@ import '../models/influencer_model.dart';
 import '../models/campaign_model.dart';
 import '../models/notification_model.dart';
 import 'gradient_button.dart';
-
-// ──────────────────────────────────────────────────────────────────────────────
-// InfluencerCard
-// ──────────────────────────────────────────────────────────────────────────────
 class InfluencerCard extends StatelessWidget {
   final Influencer influencer;
   final VoidCallback? onTap;
@@ -49,7 +45,7 @@ class InfluencerCard extends StatelessWidget {
               Expanded(child: Text(influencer.name, style: GoogleFonts.poppins(
                 fontWeight: FontWeight.w700, fontSize: 15,
                 color: isDark ? Colors.white : const Color(0xFF1A1A2E)))),
-              Text('${influencer.platform.icon}', style: const TextStyle(fontSize: 16)),
+              Text(influencer.platform.icon, style: const TextStyle(fontSize: 16)),
             ]),
             Text('${influencer.niche} • ${influencer.location}',
               style: TextStyle(fontSize: 12, color: isDark ? Colors.white54 : Colors.black45)),

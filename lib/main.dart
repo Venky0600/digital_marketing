@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
-//add_device_preview
 import 'providers/app_provider.dart';
 import 'screens/splash_screen.dart';
 import 'screens/onboarding_screen.dart';
@@ -38,8 +37,6 @@ class BrandBridgeApp extends StatelessWidget {
       title: 'BrandBridge',
       debugShowCheckedModeBanner: false,
       themeMode: provider.themeMode,
-
-      // ── Light Theme ──────────────────────────────────────────────────────
       theme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
