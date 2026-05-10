@@ -108,7 +108,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 child: const Center(child: Text('BB', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1))),
               ),
               const SizedBox(height: 20),
-              Text('Welcome to BrandBridge', style: GoogleFonts.poppins(
+              Text('Welcome to Degital_Marketing', style: GoogleFonts.poppins(
                 fontSize: 26, fontWeight: FontWeight.w800,
                 color: isDark ? Colors.white : const Color(0xFF1A1A2E))),
               const SizedBox(height: 6),
@@ -122,7 +122,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 isDark: isDark,
                 onTap: () => _selectRole(UserRole.businessOwner),
                 gradient: const LinearGradient(colors: [Color(0xFF3949AB), Color(0xFF5C6BC0)]),
-                features: ['Post campaigns', 'Browse influencers', 'Franchise listings', 'AI matching'],
+                features: const ['Post campaigns', 'Browse influencers', 'Franchise listings', 'AI matching'],
               ),
               const SizedBox(height: 16),
 
@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 isDark: isDark,
                 onTap: () => _selectRole(UserRole.influencer),
                 gradient: const LinearGradient(colors: [Color(0xFFAB47BC), Color(0xFF7B1FA2)]),
-                features: ['Discover campaigns', 'Showcase profile', 'Earn from brands', 'AI marketing help'],
+                features: const ['Discover campaigns', 'Showcase profile', 'Earn from brands', 'AI marketing help'],
               ),
               const SizedBox(height: 32),
 
