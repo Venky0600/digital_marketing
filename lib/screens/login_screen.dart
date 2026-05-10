@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/app_provider.dart';
 import '../models/user_model.dart';
 import '../widgets/gradient_button.dart';
+import '../services/api_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -16,8 +17,11 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   UserRole? _selectedRole;
   int _step = 0; // 0 = role pick, 1 = profile setup
 
-  final _nameCtrl = TextEditingController();
-  final _extraCtrl = TextEditingController(); // company or niche
+  final _emailCtrl = TextEditingController();
+  final _passwordCtrl = TextEditingController(); 
+  
+  bool _isLoading = false;
+  String? _errorMessage;
 
   late AnimationController _cardAnimCtrl;
   late Animation<double> _cardFade;
@@ -36,8 +40,8 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
   @override
   void dispose() {
     _cardAnimCtrl.dispose();
-    _nameCtrl.dispose();
-    _extraCtrl.dispose();
+    _emailCtrl.dispose();
+    _passwordCtrl.dispose();
     super.dispose();
   }
 
@@ -50,17 +54,42 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     });
   }
 
-  void _login() {
-    if (_nameCtrl.text.trim().isEmpty) return;
-    final provider = context.read<AppProvider>();
-    provider.login(AppUser(
-      name: _nameCtrl.text.trim(),
-      avatarUrl: 'https://i.pravatar.cc/300?u=${_nameCtrl.text.trim().hashCode}',
-      role: _selectedRole!,
-      company: _selectedRole == UserRole.businessOwner ? _extraCtrl.text.trim() : null,
-      niche: _selectedRole == UserRole.influencer ? _extraCtrl.text.trim() : null,
-    ));
-    Navigator.pushReplacementNamed(context, '/home');
+  Future<void> _login() async {
+    if (_emailCtrl.text.trim().isEmpty || _passwordCtrl.text.isEmpty) {
+      setState(() => _errorMessage = 'Please enter email and password');
+      return;
+    }
+    
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final roleString = _selectedRole == UserRole.businessOwner ? 'businessOwner' : 'influencer';
+      final res = await ApiService.login(_emailCtrl.text.trim(), _passwordCtrl.text, roleString);
+      
+      if (!mounted) return;
+      final userData = res['user'];
+      final provider = context.read<AppProvider>();
+      
+      provider.login(AppUser(
+        name: userData['fullName'] ?? 'User',
+        email: userData['email'] ?? _emailCtrl.text.trim(),
+        avatarUrl: userData['avatarUrl'] ?? 'https://i.pravatar.cc/300',
+        role: _selectedRole!,
+        company: userData['company'],
+        niche: userData['niche'],
+      ));
+      
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/home');
+      }
+    } catch (e) {
+      setState(() => _errorMessage = e.toString().replaceAll('Exception: ', ''));
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -108,7 +137,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 child: const Center(child: Text('BB', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1))),
               ),
               const SizedBox(height: 20),
-              Text('Welcome to BrandBridge', style: GoogleFonts.poppins(
+              Text('Welcome to Digital_Marketing', style: GoogleFonts.poppins(
                 fontSize: 26, fontWeight: FontWeight.w800,
                 color: isDark ? Colors.white : const Color(0xFF1A1A2E))),
               const SizedBox(height: 6),
@@ -122,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 isDark: isDark,
                 onTap: () => _selectRole(UserRole.businessOwner),
                 gradient: const LinearGradient(colors: [Color(0xFF3949AB), Color(0xFF5C6BC0)]),
-                features: ['Post campaigns', 'Browse influencers', 'Franchise listings', 'AI matching'],
+                features: const ['Post campaigns', 'Browse influencers', 'Franchise listings', 'AI matching'],
               ),
               const SizedBox(height: 16),
 
@@ -133,11 +162,17 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                 isDark: isDark,
                 onTap: () => _selectRole(UserRole.influencer),
                 gradient: const LinearGradient(colors: [Color(0xFFAB47BC), Color(0xFF7B1FA2)]),
-                features: ['Discover campaigns', 'Showcase profile', 'Earn from brands', 'AI marketing help'],
+                features: const ['Discover campaigns', 'Showcase profile', 'Earn from brands', 'AI marketing help'],
               ),
               const SizedBox(height: 32),
 
               Text('Tap a card to continue', style: TextStyle(fontSize: 12, color: isDark ? Colors.white38 : Colors.black38)),
+              const SizedBox(height: 32),
+              
+              TextButton(
+                onPressed: () => Navigator.pushNamed(context, '/signup'),
+                child: Text('Don\'t have an account? Sign Up', style: TextStyle(color: isDark ? Colors.white : const Color(0xFF1A1A2E), fontWeight: FontWeight.w600)),
+              )
             ],
           ),
         ),
@@ -187,36 +222,53 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
           ),
           const SizedBox(height: 32),
 
-          Text('Set up your profile', style: GoogleFonts.poppins(
+          Text('Login to your account', style: GoogleFonts.poppins(
             fontWeight: FontWeight.w700, fontSize: 20,
             color: isDark ? Colors.white : const Color(0xFF1A1A2E))),
           const SizedBox(height: 6),
-          Text('Quick setup — you can edit this later', style: TextStyle(fontSize: 13, color: isDark ? Colors.white54 : Colors.black45)),
+          Text('Enter your credentials below', style: TextStyle(fontSize: 13, color: isDark ? Colors.white54 : Colors.black45)),
           const SizedBox(height: 24),
 
           _buildTextField(
-            controller: _nameCtrl,
-            label: 'Your Full Name',
-            icon: Icons.person_rounded,
+            controller: _emailCtrl,
+            label: 'Email Address',
+            icon: Icons.email_rounded,
             accent: accent,
             isDark: isDark,
           ),
           const SizedBox(height: 14),
           _buildTextField(
-            controller: _extraCtrl,
-            label: isBO ? 'Company / Brand Name' : 'Your Content Niche (e.g. Fashion, Food)',
-            icon: isBO ? Icons.business_rounded : Icons.category_rounded,
+            controller: _passwordCtrl,
+            label: 'Password',
+            icon: Icons.lock_rounded,
             accent: accent,
             isDark: isDark,
+            isPassword: true,
           ),
           const SizedBox(height: 32),
 
-          GradientButton(
-            label: 'Enter BrandBridge ${isBO ? "🏢" : "📸"}',
-            onPressed: _login,
-            gradient: gradient,
-            icon: Icons.arrow_forward_rounded,
-          ),
+          if (_errorMessage != null) ...[
+            const SizedBox(height: 16),
+            Container(
+              padding: const EdgeInsets.all(12),
+              decoration: BoxDecoration(color: Colors.red.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
+              child: Row(children: [
+                const Icon(Icons.error_outline, color: Colors.red, size: 20),
+                const SizedBox(width: 8),
+                Expanded(child: Text(_errorMessage!, style: const TextStyle(color: Colors.red, fontSize: 13))),
+              ]),
+            ),
+          ],
+          const SizedBox(height: 32),
+
+          _isLoading
+              ? const Center(child: CircularProgressIndicator())
+              : GradientButton(
+                  label: 'Login as ${isBO ? "Business" : "Influencer"}',
+                  onPressed: _login,
+                  gradient: gradient,
+                  icon: Icons.arrow_forward_rounded,
+                ),
           const SizedBox(height: 16),
 
           // What you'll see section
@@ -255,6 +307,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
     required IconData icon,
     required Color accent,
     required bool isDark,
+    bool isPassword = false,
   }) {
     return Container(
       decoration: BoxDecoration(
@@ -264,6 +317,7 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       ),
       child: TextField(
         controller: controller,
+        obscureText: isPassword,
         style: TextStyle(color: isDark ? Colors.white : Colors.black87, fontWeight: FontWeight.w500),
         decoration: InputDecoration(
           labelText: label,

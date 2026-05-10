@@ -38,6 +38,16 @@ class PersonalBrandScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   Text(brand.displayName, style: GoogleFonts.poppins(color: Colors.white, fontWeight: FontWeight.w800, fontSize: 20)),
                   Text(brand.tagline, textAlign: TextAlign.center, style: const TextStyle(color: Colors.white70, fontSize: 12)),
+                  const SizedBox(height: 4),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(color: Colors.white.withOpacity(0.15), borderRadius: BorderRadius.circular(12)),
+                    child: Row(mainAxisSize: MainAxisSize.min, children: [
+                      const Icon(Icons.email_outlined, color: Colors.white, size: 12),
+                      const SizedBox(width: 4),
+                      Text(brand.contactEmail, style: const TextStyle(color: Colors.white, fontSize: 11, fontWeight: FontWeight.w500)),
+                    ]),
+                  ),
                 ]),
               ),
             ),

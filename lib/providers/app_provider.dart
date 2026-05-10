@@ -9,10 +9,37 @@ import '../models/notification_model.dart';
 import '../models/personal_brand_model.dart';
 import '../models/user_model.dart';
 import '../data/mock_data.dart';
+import '../services/api_service.dart';
 // ignore_for_file: avoid_types_as_parameter_names
 
 class AppProvider extends ChangeNotifier {
   final _uuid = const Uuid();
+
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+
+  Future<void> loadDataFromApi() async {
+    _isLoading = true;
+    notifyListeners();
+    try {
+      _influencers = await ApiService.getInfluencers();
+      _campaigns = await ApiService.getCampaigns();
+      _franchises = await ApiService.getFranchises();
+      _products = await ApiService.getProducts();
+      _chatMessages = await ApiService.getChatMessages();
+      _notifications = await ApiService.getNotifications();
+      try {
+        _personalBrand = await ApiService.getPersonalBrand();
+      } catch (_) {
+        _personalBrand = MockData.defaultPersonalBrand;
+      }
+    } catch (e) {
+      debugPrint('Error loading data from API: $e');
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
 
   // ── Current User / Role ───────────────────────────────────────────────────
   AppUser? _currentUser;
@@ -24,6 +51,17 @@ class AppProvider extends ChangeNotifier {
 
   void login(AppUser user) {
     _currentUser = user;
+    
+    // Bind logged-in user data dynamically to PersonalBrand
+    if (user.role == UserRole.influencer) {
+      _personalBrand = _personalBrand.copyWith(
+        displayName: user.name,
+        contactEmail: user.email,
+        avatarUrl: user.avatarUrl.isNotEmpty ? user.avatarUrl : _personalBrand.avatarUrl,
+        tagline: user.niche ?? _personalBrand.tagline,
+      );
+    }
+    
     notifyListeners();
   }
 
@@ -57,7 +95,7 @@ class AppProvider extends ChangeNotifier {
   }
 
   // --- Influencers ---
-  List<Influencer> _influencers = List.from(MockData.influencers);
+  List<Influencer> _influencers = [];
   List<Influencer> get influencers => List.unmodifiable(_influencers);
 
   void addInfluencer(Influencer influencer) {
@@ -96,7 +134,7 @@ class AppProvider extends ChangeNotifier {
   }
 
   // --- Campaigns ---
-  List<Campaign> _campaigns = List.from(MockData.campaigns);
+  List<Campaign> _campaigns = [];
   List<Campaign> get campaigns => List.unmodifiable(_campaigns);
 
   void addCampaign(Campaign campaign) {
@@ -135,7 +173,7 @@ class AppProvider extends ChangeNotifier {
   }
 
   // --- Franchises ---
-  List<Franchise> _franchises = List.from(MockData.franchises);
+  List<Franchise> _franchises = [];
   List<Franchise> get franchises => List.unmodifiable(_franchises);
 
   void addFranchise(Franchise franchise) {
@@ -157,7 +195,7 @@ class AppProvider extends ChangeNotifier {
   }
 
   // --- Products ---
-  List<Product> _products = List.from(MockData.products);
+  List<Product> _products = [];
   List<Product> get products => List.unmodifiable(_products);
 
   void addProduct(Product product) {
@@ -179,11 +217,11 @@ class AppProvider extends ChangeNotifier {
   }
 
   // --- Chat Messages ---
-  List<ChatMessage> _chatMessages = List.from(MockData.mockChatMessages);
+  List<ChatMessage> _chatMessages = [];
   List<ChatMessage> get chatMessages => List.unmodifiable(_chatMessages);
 
   void sendChatMessage(String message) {
-    _chatMessages.add(ChatMessage(
+    final newMsg = ChatMessage(
       id: _uuid.v4(),
       senderId: 'me',
       senderName: 'You',
@@ -191,7 +229,11 @@ class AppProvider extends ChangeNotifier {
       message: message,
       timestamp: DateTime.now(),
       isMe: true,
-    ));
+    );
+    _chatMessages.add(newMsg);
+    
+    // Send to backend
+    ApiService.sendChatMessage(newMsg);
 
     // Mock auto-reply after 1 second delay is handled in UI
     notifyListeners();
@@ -240,7 +282,7 @@ class AppProvider extends ChangeNotifier {
   }
 
   // --- Notifications ---
-  List<AppNotification> _notifications = List.from(MockData.notifications);
+  List<AppNotification> _notifications = [];
   List<AppNotification> get notifications => List.unmodifiable(_notifications);
   int get unreadCount => _notifications.where((n) => !n.isRead).length;
 

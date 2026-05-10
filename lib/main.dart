@@ -7,7 +7,8 @@ import 'package:device_preview/device_preview.dart';
 import 'providers/app_provider.dart';
 import 'screens/splash_screen.dart';
 import 'screens/onboarding_screen.dart';
-import 'screens/login_screen.dart';
+import 'screens/login_screen.dart';  
+import 'screens/signup_screen.dart';
 import 'screens/main_navigation.dart';
 
 void main() {
@@ -91,7 +92,7 @@ class BrandBridgeApp extends StatelessWidget {
         ),
       ),
 
-      // ── Dark Theme ───────────────────────────────────────────────────────
+    
       darkTheme: ThemeData(
         useMaterial3: true,
         colorScheme: ColorScheme.fromSeed(
@@ -151,6 +152,7 @@ class BrandBridgeApp extends StatelessWidget {
         '/splash': (_) => const SplashScreen(),
         '/onboarding': (_) => const OnboardingScreen(),
         '/login': (_) => const LoginScreen(),
+        '/signup': (_) => const SignupScreen(),
         '/home': (_) => const MainNavigation(),
       },
     );

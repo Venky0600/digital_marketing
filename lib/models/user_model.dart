@@ -10,6 +10,7 @@ extension UserRoleExt on UserRole {
 
 class AppUser {
   final String name;
+  final String email;
   final String avatarUrl;
   final UserRole role;
   final String? company;  // for business owners
@@ -17,6 +18,7 @@ class AppUser {
 
   const AppUser({
     required this.name,
+    required this.email,
     required this.avatarUrl,
     required this.role,
     this.company,
@@ -24,9 +26,10 @@ class AppUser {
   });
 
   AppUser copyWith({
-    String? name, String? avatarUrl, UserRole? role, String? company, String? niche,
+    String? name, String? email, String? avatarUrl, UserRole? role, String? company, String? niche,
   }) => AppUser(
     name: name ?? this.name,
+    email: email ?? this.email,
     avatarUrl: avatarUrl ?? this.avatarUrl,
     role: role ?? this.role,
     company: company ?? this.company,

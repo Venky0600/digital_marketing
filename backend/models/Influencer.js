@@ -1,0 +1,19 @@
+const mongoose = require('mongoose');
+
+const influencerSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  profileImageUrl: { type: String, required: true },
+  bio: { type: String, required: true },
+  niche: { type: String, required: true },
+  location: { type: String, required: true },
+  platform: { type: String, required: true },
+  followers: { type: Number, required: true },
+  engagementRate: { type: Number, required: true },
+  pricePerPromotion: { type: Number, required: true },
+  rating: { type: Number, required: true },
+  previousWorks: [{ type: String }],
+  isVerified: { type: Boolean, default: false },
+  createdAt: { type: Date, default: Date.now },
+});
+
+module.exports = mongoose.model('Influencer', influencerSchema);

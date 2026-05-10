@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import '../providers/app_provider.dart';
 import '../widgets/gradient_button.dart';
-
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -32,6 +33,12 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
         .animate(CurvedAnimation(parent: _textCtrl, curve: Curves.easeOut));
 
     _logoCtrl.forward().then((_) => _textCtrl.forward());
+
+    Future.microtask(() {
+      if (mounted) {
+        context.read<AppProvider>().loadDataFromApi();
+      }
+    });
 
     Future.delayed(const Duration(milliseconds: 2800), () {
       if (mounted) Navigator.of(context).pushReplacementNamed('/login');
