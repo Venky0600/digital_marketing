@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/app_provider.dart';
 import '../models/user_model.dart';
 import '../widgets/gradient_button.dart';
+import '../services/auth_service.dart';
 import 'campaign_list_screen.dart';
 import 'franchise_screen.dart';
 import 'product_marketing_screen.dart';
@@ -13,6 +14,7 @@ import 'home_screen.dart';
 import 'influencer_list_screen.dart';
 import 'notifications_screen.dart';
 import 'settings_screen.dart';
+import 'analytics_screen.dart';
 import 'login_screen.dart';
 
 class MainNavigation extends StatefulWidget {
@@ -206,6 +208,9 @@ class _MainNavigationState extends State<MainNavigation> {
               isDark ? 'Light Mode' : 'Dark Mode', isDark, accent,
               onTap: () { Navigator.pop(ctx); provider.toggleTheme(); }),
 
+            _drawerTile(Icons.bar_chart_rounded, 'Analytics', isDark, accent,
+              onTap: () { Navigator.pop(ctx); Navigator.push(ctx, MaterialPageRoute(builder: (_) => const AnalyticsDashboardScreen())); }),
+
             _drawerTile(Icons.settings_outlined, 'Settings', isDark, accent,
               onTap: () { Navigator.pop(ctx); Navigator.push(ctx, MaterialPageRoute(builder: (_) => const SettingsScreen())); }),
 
@@ -239,7 +244,8 @@ class _MainNavigationState extends State<MainNavigation> {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
               child: GestureDetector(
-                onTap: () {
+                onTap: () async {
+                  await AuthService.clearSession();
                   provider.logout();
                   Navigator.pushNamedAndRemoveUntil(ctx, '/login', (_) => false);
                 },

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import '../providers/app_provider.dart';
+import '../services/auth_service.dart';
 import '../widgets/gradient_button.dart';
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -40,10 +41,22 @@ class _SplashScreenState extends State<SplashScreen> with TickerProviderStateMix
       }
     });
 
-    Future.delayed(const Duration(milliseconds: 2800), () {
-      if (mounted) Navigator.of(context).pushReplacementNamed('/login');
-    });
+    // Check session after animations
+    Future.delayed(const Duration(milliseconds: 2800), _checkSession);
   }
+
+  /// Checks if a JWT token exists — if so, skip login and go directly home.
+  Future<void> _checkSession() async {
+    if (!mounted) return;
+    final loggedIn = await AuthService.isLoggedIn();
+    if (!mounted) return;
+    if (loggedIn) {
+      Navigator.of(context).pushReplacementNamed('/home');
+    } else {
+      Navigator.of(context).pushReplacementNamed('/login');
+    }
+  }
+
 
   @override
   void dispose() {

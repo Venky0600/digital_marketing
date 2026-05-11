@@ -4,7 +4,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback_secret_key_change_me';
+// JWT secret must come from environment - validated at server startup
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // @route POST /api/auth/signup
 // @desc Register a new user

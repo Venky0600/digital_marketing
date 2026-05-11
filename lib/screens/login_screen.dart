@@ -5,6 +5,7 @@ import '../providers/app_provider.dart';
 import '../models/user_model.dart';
 import '../widgets/gradient_button.dart';
 import '../services/api_service.dart';
+import '../services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -70,7 +71,13 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       final res = await ApiService.login(_emailCtrl.text.trim(), _passwordCtrl.text, roleString);
       
       if (!mounted) return;
+      
+      final String token = res['token'];
       final userData = res['user'];
+      
+      // Save token for persistent session
+      await AuthService.saveToken(token, userData['id'], roleString);
+      
       final provider = context.read<AppProvider>();
       
       provider.login(AppUser(

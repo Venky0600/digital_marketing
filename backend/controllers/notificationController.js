@@ -1,0 +1,21 @@
+const asyncHandler = require('express-async-handler');
+const Notification = require('../models/Notification');
+
+// @desc    Get all notifications
+// @route   GET /api/notifications
+// @access  Private
+const getNotifications = asyncHandler(async (req, res) => {
+  const data = await Notification.find().sort({ timestamp: -1 });
+  res.json(data);
+});
+
+// @desc    Create new Notification
+// @route   POST /api/notifications
+// @access  Private
+const createNotification = asyncHandler(async (req, res) => {
+  const newData = new Notification(req.body);
+  const saved = await newData.save();
+  res.status(201).json(saved);
+});
+
+module.exports = { getNotifications, createNotification };

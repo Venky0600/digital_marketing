@@ -10,6 +10,8 @@ import 'screens/onboarding_screen.dart';
 import 'screens/login_screen.dart';  
 import 'screens/signup_screen.dart';
 import 'screens/main_navigation.dart';
+import 'screens/real_time_chat_screen.dart';
+import 'screens/analytics_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -149,11 +151,20 @@ class BrandBridgeApp extends StatelessWidget {
     
       initialRoute: '/splash',
       routes: {
-        '/splash': (_) => const SplashScreen(),
-        '/onboarding': (_) => const OnboardingScreen(),
-        '/login': (_) => const LoginScreen(),
-        '/signup': (_) => const SignupScreen(),
-        '/home': (_) => const MainNavigation(),
+        '/splash':    (_) => const SplashScreen(),
+        '/onboarding':(_) => const OnboardingScreen(),
+        '/login':     (_) => const LoginScreen(),
+        '/signup':    (_) => const SignupScreen(),
+        '/home':      (_) => const MainNavigation(),
+        '/analytics': (_) => const AnalyticsDashboardScreen(),
+        '/chat':      (ctx) {
+          final args = ModalRoute.of(ctx)!.settings.arguments
+              as Map<String, String>? ?? {};
+          return RealTimeChatScreen(
+            roomId:        args['roomId']        ?? 'general',
+            recipientName: args['recipientName'] ?? 'Chat',
+          );
+        },
       },
     );
   }

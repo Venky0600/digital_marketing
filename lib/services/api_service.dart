@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'auth_service.dart';
 import '../models/influencer_model.dart';
 import '../models/campaign_model.dart';
 import '../models/franchise_model.dart';
@@ -12,6 +13,14 @@ class ApiService {
   // Use 10.0.2.2 for Android emulator, 127.0.0.1 for iOS simulator or Windows
   // Assuming local run for now. Using localhost instead of 127.0.0.1 for better Chrome Web compatibility.
   static const String baseUrl = 'http://localhost:5000/api';
+
+  static Future<Map<String, String>> _getHeaders() async {
+    final token = await AuthService.getToken();
+    return {
+      'Content-Type': 'application/json',
+      if (token != null) 'Authorization': 'Bearer $token',
+    };
+  }
 
   // --- Authentication ---
   static Future<Map<String, dynamic>> signup({
@@ -80,7 +89,8 @@ class ApiService {
 
   // --- Influencers ---
   static Future<List<Influencer>> getInfluencers() async {
-    final response = await http.get(Uri.parse('$baseUrl/influencers'));
+    final headers = await _getHeaders();
+    final response = await http.get(Uri.parse('$baseUrl/influencers'), headers: headers);
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
       return jsonList.map((json) => Influencer(
@@ -116,7 +126,8 @@ class ApiService {
 
   // --- Campaigns ---
   static Future<List<Campaign>> getCampaigns() async {
-    final response = await http.get(Uri.parse('$baseUrl/campaigns'));
+    final headers = await _getHeaders();
+    final response = await http.get(Uri.parse('$baseUrl/campaigns'), headers: headers);
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
       return jsonList.map((json) => Campaign(
@@ -162,7 +173,8 @@ class ApiService {
 
   // --- Franchises ---
   static Future<List<Franchise>> getFranchises() async {
-    final response = await http.get(Uri.parse('$baseUrl/franchises'));
+    final headers = await _getHeaders();
+    final response = await http.get(Uri.parse('$baseUrl/franchises'), headers: headers);
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
       return jsonList.map((json) => Franchise(
@@ -187,7 +199,8 @@ class ApiService {
 
   // --- Products ---
   static Future<List<Product>> getProducts() async {
-    final response = await http.get(Uri.parse('$baseUrl/products'));
+    final headers = await _getHeaders();
+    final response = await http.get(Uri.parse('$baseUrl/products'), headers: headers);
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
       return jsonList.map((json) => Product(
@@ -213,7 +226,8 @@ class ApiService {
 
   // --- Chat Messages ---
   static Future<List<ChatMessage>> getChatMessages() async {
-    final response = await http.get(Uri.parse('$baseUrl/chat'));
+    final headers = await _getHeaders();
+    final response = await http.get(Uri.parse('$baseUrl/chat'), headers: headers);
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
       return jsonList.map((json) => ChatMessage(
@@ -231,9 +245,10 @@ class ApiService {
   }
   
   static Future<void> sendChatMessage(ChatMessage msg) async {
+    final headers = await _getHeaders();
     await http.post(
       Uri.parse('$baseUrl/chat'),
-      headers: {'Content-Type': 'application/json'},
+      headers: headers,
       body: json.encode({
         'senderId': msg.senderId,
         'senderName': msg.senderName,
@@ -246,7 +261,8 @@ class ApiService {
 
   // --- Notifications ---
   static Future<List<AppNotification>> getNotifications() async {
-    final response = await http.get(Uri.parse('$baseUrl/notifications'));
+    final headers = await _getHeaders();
+    final response = await http.get(Uri.parse('$baseUrl/notifications'), headers: headers);
     if (response.statusCode == 200) {
       final List<dynamic> jsonList = json.decode(response.body);
       return jsonList.map((json) => AppNotification(
@@ -274,7 +290,8 @@ class ApiService {
 
   // --- Personal Brand ---
   static Future<PersonalBrand> getPersonalBrand() async {
-    final response = await http.get(Uri.parse('$baseUrl/personal-brand'));
+    final headers = await _getHeaders();
+    final response = await http.get(Uri.parse('$baseUrl/personal-brand'), headers: headers);
     if (response.statusCode == 200 && response.body.isNotEmpty && response.body != 'null') {
       final jsonMap = json.decode(response.body);
       return PersonalBrand(
