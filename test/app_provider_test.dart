@@ -18,17 +18,17 @@ void main() {
       expect(provider.isDark, isFalse);
     });
 
-    test('setUser correctly updates current user', () {
+    test('login correctly updates current user', () {
       final provider = AppProvider();
-      final user = User(
-        id: '123',
+      const user = AppUser(
         name: 'John Doe',
         email: 'john@example.com',
-        role: 'businessOwner',
-        token: 'fake_jwt_token'
+        avatarUrl: 'https://i.pravatar.cc/300',
+        role: UserRole.businessOwner,
+        company: 'John Co',
       );
       
-      provider.setUser(user);
+      provider.login(user);
       expect(provider.currentUser, isNotNull);
       expect(provider.currentUser?.name, 'John Doe');
       expect(provider.isBusinessOwner, isTrue);
@@ -36,7 +36,15 @@ void main() {
 
     test('logout clears user state', () {
       final provider = AppProvider();
-      provider.setUser(User(id: '1', name: 'A', email: 'a@b.com', role: 'admin', token: 't'));
+      const user = AppUser(
+        name: 'Jane Smith',
+        email: 'jane@smith.com',
+        avatarUrl: 'https://i.pravatar.cc/300',
+        role: UserRole.influencer,
+        niche: 'Fashion',
+      );
+      
+      provider.login(user);
       expect(provider.currentUser, isNotNull);
       
       provider.logout();
