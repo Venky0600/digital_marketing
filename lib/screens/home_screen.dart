@@ -9,6 +9,8 @@ import '../widgets/custom_card.dart';
 import 'matchmaking_screen.dart';
 import 'notifications_screen.dart';
 import 'mock_chat_screen.dart';
+import '../services/location_service.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -465,12 +467,91 @@ class HomeScreen extends StatelessWidget {
                           builder: (_) => const MatchmakingScreen())),
                   icon: Icons.auto_awesome,
                 ),
+                const SizedBox(height: 24),
+
+                // Nearby Section
+                _buildNearbySection(context, isDark),
+
                 const SizedBox(height: 80),
               ]),
             ),
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildNearbySection(BuildContext context, bool isDark) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text('Nearby Discoveries 📍',
+                style: GoogleFonts.poppins(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 17,
+                    color: isDark ? Colors.white : const Color(0xFF1A1A2E))),
+            const Icon(Icons.gps_fixed, size: 16, color: Color(0xFF5C6BC0)),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Container(
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: isDark ? const Color(0xFF1E2746) : Colors.white,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.05),
+                blurRadius: 10,
+                offset: const Offset(0, 4),
+              )
+            ],
+          ),
+          child: Column(
+            children: [
+              const Text(
+                'Discover campaigns, influencers, and franchises based on your real device location.',
+                style: TextStyle(fontSize: 12, color: Colors.grey),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 16),
+              ElevatedButton.icon(
+                onPressed: () async {
+                  try {
+                    final pos = await LocationService().getCurrentLocation();
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('GPS Active: ${pos.latitude.toStringAsFixed(4)}, ${pos.longitude.toStringAsFixed(4)}'),
+                          backgroundColor: const Color(0xFF4CAF50),
+                        ),
+                      );
+                    }
+                  } catch (e) {
+                    if (context.mounted) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text(e.toString().replaceAll('Exception: ', '')),
+                          backgroundColor: Colors.redAccent,
+                        ),
+                      );
+                    }
+                  }
+                },
+                icon: const Icon(Icons.location_on, size: 18),
+                label: const Text('Search Nearby'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFF5C6BC0),
+                  minimumSize: const Size(double.infinity, 45),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

@@ -50,23 +50,22 @@ A production-ready marketplace platform connecting **Businesses**, **Influencers
 - **XSS-Clean** — Cross-site scripting protection
 - **Session Persistence** — JWT stored securely on device
 
-### 📣 Core Features
-- Post and manage **campaigns**
-- Browse and filter **influencers** by niche, location, platform, price
-- Explore **franchise** opportunities with investment filters
+### 📣 Core Features (v1.1+)
+- **Premium Multi-Role Auth**: Custom onboarding and role selection (Business/Influencer/Franchise).
+- **Real GPS Discovery 📍**: Integrated `geolocator` for nearby campaign and franchise matching.
+- **Full i18n Support 🌐**: Localized in **English, Telugu, and Hindi** via `.arb` files and `LocaleProvider`.
 - **Marketing Services Marketplace**: Buy and sell SEO, promotions, and branding services.
 - **Push Notifications**: Real-time Firebase Cloud Messaging for alerts.
 - **Video Calling**: High-quality integrated video calls using ZegoCloud.
 - **Payment Gateway**: Secure Razorpay integration for premium purchases.
-- **AI-powered matching** via Google Gemini
+- **Social Media Hub 📊**: Abstraction layer for Instagram, YouTube, and Facebook analytics.
 - **Real-time chat** with Socket.io (typing indicators, online status)
-- **Analytics dashboard** with live MongoDB aggregation
+- **Analytics dashboard** with live MongoDB aggregation and professional skeleton loaders.
 
-### 🤖 AI Integration (Gemini)
-- AI marketing suggestions
-- Influencer recommendation engine
-- Campaign improvement analysis
-- Interactive AI chatbot with conversation history
+### 🤖 Future Roadmap (Scaffolded Modules)
+- **AI Marketing Engine (Gemini)**: Future integration for automated campaign strategy generation and influencer matching.
+- **Global Deployment**: Multi-currency support and expanded localization.
+- **Automated Verification**: Social media account linking and automatic badge issuance.
 
 ### 📊 Analytics
 - Total users, campaigns, influencers, franchises

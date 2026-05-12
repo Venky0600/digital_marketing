@@ -14,7 +14,13 @@ class NotificationService {
 
   static Future<void> initialize() async {
     try {
+      // For web, options are required. If not provided, this might fail.
+      // We wrap it in a try-catch to allow the app to run without push notifications
+      // if Firebase configuration is missing in the local environment.
       await Firebase.initializeApp();
+      if (kIsWeb) {
+         // Web-specific logic if needed
+      }
       
       FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 

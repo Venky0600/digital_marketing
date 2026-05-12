@@ -1,0 +1,110 @@
+{
+  "@@locale": "en",
+  "appTitle": "Digital Marketing",
+  "@appTitle": { "description": "The main application title" },
+
+  "home": "Home",
+  "@home": { "description": "Home navigation label" },
+
+  "campaigns": "Campaigns",
+  "@campaigns": { "description": "Campaigns navigation label" },
+
+  "influencers": "Influencers",
+  "@influencers": { "description": "Influencers navigation label" },
+
+  "franchises": "Franchises",
+  "@franchises": { "description": "Franchises navigation label" },
+
+  "analytics": "Analytics",
+  "@analytics": { "description": "Analytics navigation label" },
+
+  "profile": "Profile",
+  "@profile": { "description": "Profile navigation label" },
+
+  "login": "Login",
+  "@login": { "description": "Login button label" },
+
+  "signup": "Sign Up",
+  "@signup": { "description": "Signup button label" },
+
+  "logout": "Logout",
+  "@logout": { "description": "Logout button label" },
+
+  "email": "Email Address",
+  "@email": { "description": "Email field label" },
+
+  "password": "Password",
+  "@password": { "description": "Password field label" },
+
+  "fullName": "Full Name",
+  "@fullName": { "description": "Full name field label" },
+
+  "businessOwner": "Business Owner",
+  "@businessOwner": { "description": "Business Owner role" },
+
+  "influencer": "Influencer",
+  "@influencer": { "description": "Influencer role" },
+
+  "franchiseSeeker": "Franchise Seeker",
+  "@franchiseSeeker": { "description": "Franchise Seeker role" },
+
+  "search": "Search",
+  "@search": { "description": "Search placeholder" },
+
+  "filter": "Filter",
+  "@filter": { "description": "Filter label" },
+
+  "nearbyOpportunities": "Nearby Opportunities",
+  "@nearbyOpportunities": { "description": "GPS-based nearby section title" },
+
+  "locationPermissionRequired": "Location permission is required to show nearby opportunities.",
+  "@locationPermissionRequired": { "description": "Location permission message" },
+
+  "enableLocation": "Enable Location",
+  "@enableLocation": { "description": "Enable location button" },
+
+  "notifications": "Notifications",
+  "@notifications": { "description": "Notifications label" },
+
+  "chat": "Chat",
+  "@chat": { "description": "Chat label" },
+
+  "videoCall": "Video Call",
+  "@videoCall": { "description": "Video call label" },
+
+  "startCall": "Start Call",
+  "@startCall": { "description": "Start call button" },
+
+  "joinCall": "Join Call",
+  "@joinCall": { "description": "Join call button" },
+
+  "payment": "Payment",
+  "@payment": { "description": "Payment label" },
+
+  "marketingServices": "Marketing Services",
+  "@marketingServices": { "description": "Marketing services section title" },
+
+  "settings": "Settings",
+  "@settings": { "description": "Settings label" },
+
+  "language": "Language",
+  "@language": { "description": "Language setting label" },
+
+  "selectLanguage": "Select Language",
+  "@selectLanguage": { "description": "Language picker title" },
+
+  "darkMode": "Dark Mode",
+  "@darkMode": { "description": "Dark mode toggle label" },
+
+  "retry": "Retry",
+  "@retry": { "description": "Retry button label" },
+
+  "loading": "Loading...",
+  "@loading": { "description": "Generic loading message" },
+
+  "errorOccurred": "An error occurred. Please try again.",
+  "@errorOccurred": { "description": "Generic error message" },
+
+  "noDataFound": "No data found.",
+  "@noDataFound": { "description": "Empty state message" }
+}

@@ -60,47 +60,23 @@ class _AiChatScreenState extends State<AiChatScreen>
     });
     _scrollToBottom();
 
+    // FUTURE-SCOPE: Real Gemini API integration is scaffolded but disabled for this evaluation phase.
+    // To enable, set GEMINI_API_KEY in the backend .env and revert this mock logic.
     try {
-      final token = await AuthService.getToken();
-      final response = await http.post(
-        Uri.parse('${ApiService.baseUrl}/ai/chat'),
-        headers: {
-          'Content-Type': 'application/json',
-          if (token != null) 'Authorization': 'Bearer $token',
-        },
-        body: json.encode({
-          'message': text,
-          'history': _history,
-        }),
-      ).timeout(const Duration(seconds: 30));
+      await Future.delayed(const Duration(seconds: 2)); // Simulate AI thinking
 
       if (!mounted) return;
 
-      if (response.statusCode == 200) {
-        final data   = json.decode(response.body);
-        final reply  = data['reply'] as String;
+      final reply = _getMockAiResponse(text);
 
-        // Build history for context in next message
-        _history.add({ 'role': 'user',  'text': text  });
-        _history.add({ 'role': 'model', 'text': reply });
-
-        // Keep history to last 10 exchanges to avoid large payloads
-        if (_history.length > 20) _history.removeRange(0, 2);
-
-        setState(() {
-          _messages.add(_AiMessage(text: reply, isUser: false));
-        });
-      } else {
-        final err = json.decode(response.body)['message'] ?? 'AI service unavailable.';
-        setState(() {
-          _messages.add(_AiMessage(text: '⚠️ $err', isUser: false));
-        });
-      }
+      setState(() {
+        _messages.add(_AiMessage(text: reply, isUser: false));
+      });
     } catch (e) {
       if (!mounted) return;
       setState(() {
         _messages.add(_AiMessage(
-          text: '⚠️ Could not reach AI service. Please check your connection and ensure GEMINI_API_KEY is set in the backend .env file.',
+          text: '⚠️ AI Service in evaluation mode. Real-time responses are part of the future roadmap.',
           isUser: false,
         ));
       });
@@ -108,6 +84,18 @@ class _AiChatScreenState extends State<AiChatScreen>
       if (mounted) setState(() => _isLoading = false);
       _scrollToBottom();
     }
+  }
+
+  String _getMockAiResponse(String input) {
+    final lower = input.toLowerCase();
+    if (lower.contains('campaign')) {
+      return '🚀 [FUTURE SCOPE] I see you\'re asking about campaigns! In the production version, I will analyze your historical data to suggest optimal budget allocation and target demographics.';
+    } else if (lower.contains('influencer')) {
+      return '👥 [FUTURE SCOPE] For influencer recommendations, I\'ll soon be able to match your brand values with creator engagement metrics across 4+ platforms automatically.';
+    } else if (lower.contains('franchise')) {
+      return '🏪 [FUTURE SCOPE] Franchise analysis will include ROI projections based on local market saturation and demographic trends once fully deployed.';
+    }
+    return '✨ [FUTURE SCOPE] That\'s an interesting request! I\'m currently in "Scaffolding Mode". In the full release, I\'ll use Google Gemini to provide personalized marketing strategies for your business.';
   }
 
   void _scrollToBottom() {

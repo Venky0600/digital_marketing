@@ -97,21 +97,21 @@ class ApiService {
       final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
           ? decoded['data'] 
           : (decoded as List<dynamic>);
-      return jsonList.map((json) => Influencer(
-        id: json['_id'],
-        name: json['name'],
-        profileImageUrl: json['profileImageUrl'],
-        bio: json['bio'],
-        niche: json['niche'],
-        location: json['location'],
-        platform: _parseInfluencerPlatform(json['platform']),
-        followers: json['followers'],
-        engagementRate: json['engagementRate'].toDouble(),
-        pricePerPromotion: json['pricePerPromotion'].toDouble(),
-        rating: json['rating'].toDouble(),
-        previousWorks: List<String>.from(json['previousWorks']),
-        isVerified: json['isVerified'],
-        createdAt: DateTime.parse(json['createdAt']),
+      return jsonList.map((j) => Influencer(
+        id: j['_id']?.toString() ?? '',
+        name: j['name']?.toString() ?? 'Unknown',
+        profileImageUrl: j['profileImageUrl']?.toString() ?? '',
+        bio: j['bio']?.toString() ?? '',
+        niche: j['niche']?.toString() ?? '',
+        location: j['location']?.toString() ?? '',
+        platform: _parseInfluencerPlatform(j['platform']?.toString() ?? ''),
+        followers: (j['followers'] ?? 0) as int,
+        engagementRate: (j['engagementRate'] ?? 0).toDouble(),
+        pricePerPromotion: (j['pricePerPromotion'] ?? 0).toDouble(),
+        rating: (j['rating'] ?? 0).toDouble(),
+        previousWorks: j['previousWorks'] != null ? List<String>.from(j['previousWorks']) : [],
+        isVerified: j['isVerified'] ?? false,
+        createdAt: j['createdAt'] != null ? DateTime.parse(j['createdAt']) : DateTime.now(),
       )).toList();
     } else {
       throw Exception('Failed to load influencers');
@@ -137,21 +137,21 @@ class ApiService {
       final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
           ? decoded['data'] 
           : (decoded as List<dynamic>);
-      return jsonList.map((json) => Campaign(
-        id: json['_id'],
-        businessName: json['businessName'],
-        logoUrl: json['logoUrl'],
-        category: json['category'],
-        title: json['title'],
-        description: json['description'],
-        location: json['location'],
-        budget: json['budget'].toDouble(),
-        targetAudience: json['targetAudience'],
-        campaignType: _parseCampaignType(json['campaignType']),
-        requiredNiche: json['requiredNiche'],
-        status: _parseCampaignStatus(json['status']),
-        createdAt: DateTime.parse(json['createdAt']),
-        applicants: json['applicants'],
+      return jsonList.map((j) => Campaign(
+        id: j['_id']?.toString() ?? '',
+        businessName: j['businessName']?.toString() ?? '',
+        logoUrl: j['logoUrl']?.toString() ?? '',
+        category: j['category']?.toString() ?? '',
+        title: j['title']?.toString() ?? '',
+        description: j['description']?.toString() ?? '',
+        location: j['location']?.toString() ?? '',
+        budget: (j['budget'] ?? 0).toDouble(),
+        targetAudience: j['targetAudience']?.toString() ?? '',
+        campaignType: _parseCampaignType(j['campaignType']?.toString() ?? ''),
+        requiredNiche: j['requiredNiche']?.toString() ?? '',
+        status: _parseCampaignStatus(j['status']?.toString() ?? ''),
+        createdAt: j['createdAt'] != null ? DateTime.parse(j['createdAt']) : DateTime.now(),
+        applicants: (j['applicants'] ?? 0) as int,
       )).toList();
     } else {
       throw Exception('Failed to load campaigns');
@@ -187,20 +187,20 @@ class ApiService {
       final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
           ? decoded['data'] 
           : (decoded as List<dynamic>);
-      return jsonList.map((json) => Franchise(
-        id: json['_id'],
-        brandName: json['brandName'],
-        imageUrl: json['imageUrl'],
-        investmentRequired: json['investmentRequired'].toDouble(),
-        expectedProfit: json['expectedProfit'].toDouble(),
-        locationAvailability: json['locationAvailability'],
-        category: json['category'],
-        supportProvided: List<String>.from(json['supportProvided']),
-        contactEmail: json['contactEmail'],
-        description: json['description'],
-        established: json['established'],
-        totalOutlets: json['totalOutlets'],
-        createdAt: DateTime.parse(json['createdAt']),
+      return jsonList.map((j) => Franchise(
+        id: j['_id']?.toString() ?? '',
+        brandName: j['brandName']?.toString() ?? '',
+        imageUrl: j['imageUrl']?.toString() ?? '',
+        investmentRequired: (j['investmentRequired'] ?? 0).toDouble(),
+        expectedProfit: (j['expectedProfit'] ?? 0).toDouble(),
+        locationAvailability: j['locationAvailability']?.toString() ?? '',
+        category: j['category']?.toString() ?? '',
+        supportProvided: j['supportProvided'] != null ? List<String>.from(j['supportProvided']) : [],
+        contactEmail: j['contactEmail']?.toString() ?? '',
+        description: j['description']?.toString() ?? '',
+        established: j['established'] ?? 0,
+        totalOutlets: j['totalOutlets'] ?? 0,
+        createdAt: j['createdAt'] != null ? DateTime.parse(j['createdAt']) : DateTime.now(),
       )).toList();
     } else {
       throw Exception('Failed to load franchises');
@@ -216,21 +216,24 @@ class ApiService {
       final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
           ? decoded['data'] 
           : (decoded as List<dynamic>);
-      return jsonList.map((json) => Product(
-        id: json['_id'],
-        name: json['name'],
-        imageUrl: json['imageUrl'],
-        description: json['description'],
-        price: json['price'].toDouble(),
-        discountedPrice: json['discountedPrice']?.toDouble(),
-        offerBadge: json['offerBadge'],
-        benefits: List<String>.from(json['benefits']),
-        testimonials: (json['testimonials'] as List).map((t) => Testimonial(
-          name: t['name'], review: t['review'], rating: t['rating'], avatarUrl: t['avatarUrl']
+      return jsonList.map((j) => Product(
+        id: j['_id']?.toString() ?? '',
+        name: j['name']?.toString() ?? '',
+        imageUrl: j['imageUrl']?.toString() ?? '',
+        description: j['description']?.toString() ?? '',
+        price: (j['price'] ?? 0).toDouble(),
+        discountedPrice: j['discountedPrice'] != null ? (j['discountedPrice']).toDouble() : null,
+        offerBadge: j['offerBadge']?.toString(),
+        benefits: j['benefits'] != null ? List<String>.from(j['benefits']) : [],
+        testimonials: (j['testimonials'] as List? ?? []).map((t) => Testimonial(
+          name: t['name']?.toString() ?? '',
+          review: t['review']?.toString() ?? '',
+          rating: (t['rating'] ?? 0).toDouble(),
+          avatarUrl: t['avatarUrl']?.toString() ?? '',
         )).toList(),
-        ctaLabel: json['ctaLabel'],
-        category: json['category'],
-        createdAt: DateTime.parse(json['createdAt']),
+        ctaLabel: j['ctaLabel']?.toString() ?? '',
+        category: j['category']?.toString() ?? '',
+        createdAt: j['createdAt'] != null ? DateTime.parse(j['createdAt']) : DateTime.now(),
       )).toList();
     } else {
       throw Exception('Failed to load products');
@@ -246,14 +249,14 @@ class ApiService {
       final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
           ? decoded['data'] 
           : (decoded as List<dynamic>);
-      return jsonList.map((json) => ChatMessage(
-        id: json['_id'],
-        senderId: json['senderId'],
-        senderName: json['senderName'],
-        senderAvatar: json['senderAvatar'],
-        message: json['message'],
-        timestamp: DateTime.parse(json['timestamp']),
-        isMe: json['isMe'],
+      return jsonList.map((j) => ChatMessage(
+        id: j['_id']?.toString() ?? '',
+        senderId: j['senderId']?.toString() ?? '',
+        senderName: j['senderName']?.toString() ?? '',
+        senderAvatar: j['senderAvatar']?.toString() ?? '',
+        message: j['message']?.toString() ?? '',
+        timestamp: j['timestamp'] != null ? DateTime.parse(j['timestamp']) : DateTime.now(),
+        isMe: j['isMe'] ?? false,
       )).toList();
     } else {
       throw Exception('Failed to load chat messages');
@@ -284,13 +287,13 @@ class ApiService {
       final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
           ? decoded['data'] 
           : (decoded as List<dynamic>);
-      return jsonList.map((json) => AppNotification(
-        id: json['_id'],
-        title: json['title'],
-        body: json['body'],
-        type: _parseNotificationType(json['type']),
-        timestamp: DateTime.parse(json['timestamp']),
-        isRead: json['isRead'],
+      return jsonList.map((j) => AppNotification(
+        id: j['_id']?.toString() ?? '',
+        title: j['title']?.toString() ?? '',
+        body: j['body']?.toString() ?? '',
+        type: _parseNotificationType(j['type']?.toString() ?? ''),
+        timestamp: j['timestamp'] != null ? DateTime.parse(j['timestamp']) : DateTime.now(),
+        isRead: j['isRead'] ?? false,
       )).toList();
     } else {
       throw Exception('Failed to load notifications');
@@ -314,19 +317,22 @@ class ApiService {
     if (response.statusCode == 200 && response.body.isNotEmpty && response.body != 'null') {
       final jsonMap = json.decode(response.body);
       return PersonalBrand(
-        displayName: jsonMap['displayName'],
-        avatarUrl: jsonMap['avatarUrl'],
-        tagline: jsonMap['tagline'],
-        bio: jsonMap['bio'],
-        contactEmail: jsonMap['contactEmail'],
-        socialLinks: (jsonMap['socialLinks'] as List).map((l) => SocialLink(
-          platform: l['platform'], url: l['url']
+        displayName: jsonMap['displayName']?.toString() ?? '',
+        avatarUrl: jsonMap['avatarUrl']?.toString() ?? '',
+        tagline: jsonMap['tagline']?.toString() ?? '',
+        bio: jsonMap['bio']?.toString() ?? '',
+        contactEmail: jsonMap['contactEmail']?.toString() ?? '',
+        socialLinks: (jsonMap['socialLinks'] as List? ?? []).map((l) => SocialLink(
+          platform: l['platform']?.toString() ?? '', url: l['url']?.toString() ?? ''
         )).toList(),
-        portfolioItems: (jsonMap['portfolioItems'] as List).map((p) => PortfolioItem(
-          id: p['_id'] ?? '', title: p['title'], description: p['description'], imageUrl: p['imageUrl']
+        portfolioItems: (jsonMap['portfolioItems'] as List? ?? []).map((p) => PortfolioItem(
+          id: p['_id']?.toString() ?? '', title: p['title']?.toString() ?? '',
+          description: p['description']?.toString() ?? '', imageUrl: p['imageUrl']?.toString() ?? ''
         )).toList(),
-        services: (jsonMap['services'] as List).map((s) => BrandService(
-          id: s['_id'] ?? '', title: s['title'], description: s['description'], price: s['price'].toDouble()
+        services: (jsonMap['services'] as List? ?? []).map((s) => BrandService(
+          id: s['_id']?.toString() ?? '', title: s['title']?.toString() ?? '',
+          description: s['description']?.toString() ?? '',
+          price: (s['price'] ?? 0).toDouble()
         )).toList(),
       );
     } else {

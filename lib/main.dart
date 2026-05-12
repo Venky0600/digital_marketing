@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
 //add_device_preview
 import 'providers/app_provider.dart';
+import 'providers/locale_provider.dart';
 import 'screens/splash_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/login_screen.dart';  
@@ -24,8 +26,11 @@ void main() async {
   runApp(
     DevicePreview(
       enabled: !const bool.fromEnvironment('dart.vm.product'),
-      builder: (context) => ChangeNotifierProvider(
-        create: (_) => AppProvider(),
+      builder: (context) => MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => AppProvider()),
+          ChangeNotifierProvider(create: (_) => LocaleProvider()),
+        ],
         child: const BrandBridgeApp(),
       ),
     ),
@@ -37,12 +42,24 @@ class BrandBridgeApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final provider = context.watch<AppProvider>();
+    final provider     = context.watch<AppProvider>();
+    final localeProvider = context.watch<LocaleProvider>();
 
     return MaterialApp(
-      title: 'BrandBridge',
+      title: 'Digital Marketing',
       debugShowCheckedModeBanner: false,
       themeMode: provider.themeMode,
+      locale: localeProvider.locale,
+      supportedLocales: const [
+        Locale('en'),
+        Locale('te'),
+        Locale('hi'),
+      ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
 
       // ── Light Theme ──────────────────────────────────────────────────────
       theme: ThemeData(
