@@ -20,8 +20,13 @@ const getFranchises = asyncHandler(async (req, res) => {
     };
   }
 
+  const query = Franchise.find(filter).skip(skip).limit(limit);
+  if (!lat || !lng) {
+    query.sort({ createdAt: -1 });
+  }
+
   const [data, total] = await Promise.all([
-    Franchise.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
+    query,
     Franchise.countDocuments(filter)
   ]);
 
@@ -60,8 +65,13 @@ const searchFranchises = asyncHandler(async (req, res) => {
   }
 
   const skip = (parseInt(page) - 1) * parseInt(limit);
+  const query = Franchise.find(filter).skip(skip).limit(parseInt(limit));
+  if (!lat || !lng) {
+    query.sort({ createdAt: -1 });
+  }
+
   const [data, total] = await Promise.all([
-    Franchise.find(filter).sort({ createdAt: -1 }).skip(skip).limit(parseInt(limit)),
+    query,
     Franchise.countDocuments(filter)
   ]);
 

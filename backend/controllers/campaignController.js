@@ -52,8 +52,13 @@ const searchCampaigns = asyncHandler(async (req, res) => {
   }
 
   const skip = (parseInt(page) - 1) * parseInt(limit);
+  const query = Campaign.find(filter).skip(skip).limit(parseInt(limit));
+  if (!lat || !lng) {
+    query.sort({ createdAt: -1 });
+  }
+
   const [data, total] = await Promise.all([
-    Campaign.find(filter).sort({ createdAt: -1 }).skip(skip).limit(parseInt(limit)),
+    query,
     Campaign.countDocuments(filter)
   ]);
 

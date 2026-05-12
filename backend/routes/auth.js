@@ -35,7 +35,8 @@ router.post('/signup', async (req, res) => {
 
     // Create new user
     console.log('Creating new user...');
-    const avatarUrl = `https://i.pravatar.cc/300?u=${email.hashCode || Date.now()}`;
+    const randomSeed = Math.floor(Math.random() * 1000000);
+    const avatarUrl = `https://i.pravatar.cc/300?u=${email}_${randomSeed}`;
     const newUser = new User({
       fullName,
       email,

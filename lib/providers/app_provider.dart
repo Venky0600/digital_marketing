@@ -18,13 +18,13 @@ class AppProvider extends ChangeNotifier {
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
-  Future<void> loadDataFromApi() async {
+  Future<void> loadDataFromApi({double? lat, double? lng}) async {
     _isLoading = true;
     notifyListeners();
     try {
-      _influencers = await ApiService.getInfluencers();
-      _campaigns = await ApiService.getCampaigns();
-      _franchises = await ApiService.getFranchises();
+      _influencers = await ApiService.getInfluencers(lat: lat, lng: lng);
+      _campaigns = await ApiService.getCampaigns(lat: lat, lng: lng);
+      _franchises = await ApiService.getFranchises(lat: lat, lng: lng);
       _products = await ApiService.getProducts();
       _chatMessages = await ApiService.getChatMessages();
       _notifications = await ApiService.getNotifications();

@@ -65,15 +65,19 @@ class _SignupScreenState extends State<SignupScreen> {
         niche: _selectedRole == UserRole.influencer ? _extraCtrl.text.trim() : null,
       );
 
-      setState(() {
-        _successMessage = 'Account created successfully! You can now log in.';
-      });
+      if (mounted) {
+        setState(() {
+          _successMessage = 'Account created successfully! You can now log in.';
+        });
 
-      Future.delayed(const Duration(seconds: 2), () {
-        if (mounted) Navigator.pop(context);
-      });
+        Future.delayed(const Duration(seconds: 2), () {
+          if (mounted) Navigator.pop(context);
+        });
+      }
     } catch (e) {
-      setState(() => _errorMessage = e.toString().replaceAll('Exception: ', ''));
+      if (mounted) {
+        setState(() => _errorMessage = e.toString().replaceAll('Exception: ', ''));
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }

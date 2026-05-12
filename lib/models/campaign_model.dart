@@ -78,4 +78,58 @@ class Campaign {
     status: status ?? this.status, createdAt: createdAt ?? this.createdAt,
     applicants: applicants ?? this.applicants,
   );
+
+  factory Campaign.fromJson(Map<String, dynamic> json) {
+    return Campaign(
+      id: json['_id']?.toString() ?? json['id']?.toString() ?? '',
+      businessName: json['businessName']?.toString() ?? 'Unknown Business',
+      logoUrl: json['logoUrl']?.toString() ?? 'https://picsum.photos/200',
+      category: json['category']?.toString() ?? '',
+      title: json['title']?.toString() ?? 'No Title',
+      description: json['description']?.toString() ?? '',
+      location: json['location']?.toString() ?? '',
+      budget: (json['budget'] ?? 0).toDouble(),
+      targetAudience: json['targetAudience']?.toString() ?? '',
+      campaignType: _parseType(json['campaignType']?.toString()),
+      requiredNiche: json['requiredNiche']?.toString() ?? '',
+      status: _parseStatus(json['status']?.toString()),
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : DateTime.now(),
+      applicants: (json['applicants'] ?? 0) as int,
+    );
+  }
+
+  static CampaignStatus _parseStatus(String? s) {
+    switch (s?.toLowerCase()) {
+      case 'open':       return CampaignStatus.open;
+      case 'inprogress': return CampaignStatus.inProgress;
+      case 'completed':  return CampaignStatus.completed;
+      default:           return CampaignStatus.open;
+    }
+  }
+
+  static CampaignType _parseType(String? t) {
+    switch (t?.toLowerCase()) {
+      case 'brandawareness':          return CampaignType.brandAwareness;
+      case 'productpromotion':        return CampaignType.productPromotion;
+      case 'eventmarketing':          return CampaignType.eventMarketing;
+      case 'influencercollaboration': return CampaignType.influencerCollaboration;
+      case 'contentcreation':         return CampaignType.contentCreation;
+      default:                        return CampaignType.brandAwareness;
+    }
+  }
+
+  Map<String, dynamic> toJson() => {
+    'businessName': businessName,
+    'logoUrl': logoUrl,
+    'category': category,
+    'title': title,
+    'description': description,
+    'location': location,
+    'budget': budget,
+    'targetAudience': targetAudience,
+    'campaignType': campaignType.name,
+    'requiredNiche': requiredNiche,
+    'status': status.name,
+    'applicants': applicants,
+  };
 }

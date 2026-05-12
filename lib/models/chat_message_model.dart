@@ -16,6 +16,18 @@ class ChatMessage {
     required this.timestamp,
     required this.isMe,
   });
+
+  factory ChatMessage.fromJson(Map<String, dynamic> json) {
+    return ChatMessage(
+      id: json['_id']?.toString() ?? json['id']?.toString() ?? '',
+      senderId: json['senderId']?.toString() ?? '',
+      senderName: json['senderName']?.toString() ?? 'User',
+      senderAvatar: json['senderAvatar']?.toString() ?? 'https://i.pravatar.cc/150',
+      message: json['message']?.toString() ?? '',
+      timestamp: json['timestamp'] != null ? DateTime.parse(json['timestamp']) : DateTime.now(),
+      isMe: json['isMe'] ?? false,
+    );
+  }
 }
 
 class AiChatMessage {

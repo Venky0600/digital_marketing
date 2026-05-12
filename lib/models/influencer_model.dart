@@ -76,4 +76,49 @@ class Influencer {
     rating: rating ?? this.rating, previousWorks: previousWorks ?? this.previousWorks,
     isVerified: isVerified ?? this.isVerified, createdAt: createdAt ?? this.createdAt,
   );
+
+  factory Influencer.fromJson(Map<String, dynamic> json) {
+    return Influencer(
+      id: json['_id']?.toString() ?? json['id']?.toString() ?? '',
+      name: json['name']?.toString() ?? 'Unknown',
+      profileImageUrl: json['profileImageUrl']?.toString() ?? 'https://i.pravatar.cc/300',
+      bio: json['bio']?.toString() ?? '',
+      niche: json['niche']?.toString() ?? '',
+      location: json['location']?.toString() ?? '',
+      platform: _parsePlatform(json['platform']?.toString()),
+      followers: (json['followers'] ?? 0) as int,
+      engagementRate: (json['engagementRate'] ?? 0).toDouble(),
+      pricePerPromotion: (json['pricePerPromotion'] ?? 0).toDouble(),
+      rating: (json['rating'] ?? 0).toDouble(),
+      previousWorks: json['previousWorks'] != null ? List<String>.from(json['previousWorks']) : [],
+      isVerified: json['isVerified'] ?? false,
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : DateTime.now(),
+    );
+  }
+
+  static InfluencerPlatform _parsePlatform(String? p) {
+    switch (p?.toLowerCase()) {
+      case 'instagram': return InfluencerPlatform.instagram;
+      case 'youtube':   return InfluencerPlatform.youtube;
+      case 'facebook':  return InfluencerPlatform.facebook;
+      case 'linkedin':  return InfluencerPlatform.linkedin;
+      case 'tiktok':    return InfluencerPlatform.tiktok;
+      default:          return InfluencerPlatform.instagram;
+    }
+  }
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'profileImageUrl': profileImageUrl,
+    'bio': bio,
+    'niche': niche,
+    'location': location,
+    'platform': platform.name,
+    'followers': followers,
+    'engagementRate': engagementRate,
+    'pricePerPromotion': pricePerPromotion,
+    'rating': rating,
+    'previousWorks': previousWorks,
+    'isVerified': isVerified,
+  };
 }

@@ -2,6 +2,13 @@ class SocialLink {
   final String platform;
   final String url;
   const SocialLink({required this.platform, required this.url});
+
+  factory SocialLink.fromJson(Map<String, dynamic> json) {
+    return SocialLink(
+      platform: json['platform']?.toString() ?? '',
+      url: json['url']?.toString() ?? '',
+    );
+  }
 }
 
 class PortfolioItem {
@@ -10,6 +17,15 @@ class PortfolioItem {
   final String description;
   final String imageUrl;
   const PortfolioItem({required this.id, required this.title, required this.description, required this.imageUrl});
+
+  factory PortfolioItem.fromJson(Map<String, dynamic> json) {
+    return PortfolioItem(
+      id: json['_id']?.toString() ?? json['id']?.toString() ?? '',
+      title: json['title']?.toString() ?? '',
+      description: json['description']?.toString() ?? '',
+      imageUrl: json['imageUrl']?.toString() ?? '',
+    );
+  }
 }
 
 class BrandService {
@@ -18,6 +34,15 @@ class BrandService {
   final String description;
   final double price;
   const BrandService({required this.id, required this.title, required this.description, required this.price});
+
+  factory BrandService.fromJson(Map<String, dynamic> json) {
+    return BrandService(
+      id: json['_id']?.toString() ?? json['id']?.toString() ?? '',
+      title: json['title']?.toString() ?? '',
+      description: json['description']?.toString() ?? '',
+      price: (json['price'] ?? 0).toDouble(),
+    );
+  }
 }
 
 class PersonalBrand {
@@ -55,4 +80,17 @@ class PersonalBrand {
     portfolioItems: portfolioItems ?? this.portfolioItems,
     services: services ?? this.services,
   );
+
+  factory PersonalBrand.fromJson(Map<String, dynamic> json) {
+    return PersonalBrand(
+      displayName: json['displayName']?.toString() ?? '',
+      avatarUrl: json['avatarUrl']?.toString() ?? '',
+      tagline: json['tagline']?.toString() ?? '',
+      bio: json['bio']?.toString() ?? '',
+      contactEmail: json['contactEmail']?.toString() ?? '',
+      socialLinks: (json['socialLinks'] as List? ?? []).map((l) => SocialLink.fromJson(l)).toList(),
+      portfolioItems: (json['portfolioItems'] as List? ?? []).map((p) => PortfolioItem.fromJson(p)).toList(),
+      services: (json['services'] as List? ?? []).map((s) => BrandService.fromJson(s)).toList(),
+    );
+  }
 }

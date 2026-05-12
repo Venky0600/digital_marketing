@@ -35,4 +35,20 @@ class AppUser {
     company: company ?? this.company,
     niche: niche ?? this.niche,
   );
+
+  factory AppUser.fromJson(Map<String, dynamic> json) {
+    return AppUser(
+      name: json['fullName']?.toString() ?? json['name']?.toString() ?? 'User',
+      email: json['email']?.toString() ?? '',
+      avatarUrl: json['avatarUrl']?.toString() ?? 'https://i.pravatar.cc/300',
+      role: _parseRole(json['role']?.toString()),
+      company: json['company']?.toString(),
+      niche: json['niche']?.toString(),
+    );
+  }
+
+  static UserRole _parseRole(String? r) {
+    if (r?.toLowerCase() == 'influencer') return UserRole.influencer;
+    return UserRole.businessOwner;
+  }
 }

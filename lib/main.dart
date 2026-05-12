@@ -177,11 +177,10 @@ class BrandBridgeApp extends StatelessWidget {
         '/home':      (_) => const MainNavigation(),
         '/analytics': (_) => const AnalyticsDashboardScreen(),
         '/chat':      (ctx) {
-          final args = ModalRoute.of(ctx)!.settings.arguments
-              as Map<String, String>? ?? {};
+          final args = ModalRoute.of(ctx)?.settings.arguments as Map?;
           return RealTimeChatScreen(
-            roomId:        args['roomId']        ?? 'general',
-            recipientName: args['recipientName'] ?? 'Chat',
+            roomId:        args?['roomId']?.toString()        ?? 'general',
+            recipientName: args?['recipientName']?.toString() ?? 'Chat',
           );
         },
       },

@@ -131,7 +131,7 @@ class HomeScreen extends StatelessWidget {
               const Padding(
                 padding: EdgeInsets.only(bottom: 20),
                 child: Text(
-                  "BrandBridge v1.0",
+                  "Digital_Marketing v1.0",
                   style: TextStyle(
                     color: Colors.grey,
                   ),
@@ -525,9 +525,13 @@ class HomeScreen extends StatelessWidget {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('GPS Active: ${pos.latitude.toStringAsFixed(4)}, ${pos.longitude.toStringAsFixed(4)}'),
-                          backgroundColor: const Color(0xFF4CAF50),
+                          content: Text('GPS Active: Finding nearby opportunities...'),
+                          backgroundColor: const Color(0xFF5C6BC0),
                         ),
+                      );
+                      await context.read<AppProvider>().loadDataFromApi(
+                        lat: pos.latitude, 
+                        lng: pos.longitude
                       );
                     }
                   } catch (e) {

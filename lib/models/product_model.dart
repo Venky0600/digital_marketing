@@ -10,6 +10,15 @@ class Testimonial {
     required this.rating,
     required this.avatarUrl,
   });
+
+  factory Testimonial.fromJson(Map<String, dynamic> json) {
+    return Testimonial(
+      name: json['name']?.toString() ?? 'Anonymous',
+      review: json['review']?.toString() ?? '',
+      rating: (json['rating'] ?? 5).toDouble(),
+      avatarUrl: json['avatarUrl']?.toString() ?? 'https://i.pravatar.cc/100',
+    );
+  }
 }
 
 class Product {
@@ -61,4 +70,21 @@ class Product {
     testimonials: testimonials ?? this.testimonials, ctaLabel: ctaLabel ?? this.ctaLabel,
     category: category ?? this.category, createdAt: createdAt ?? this.createdAt,
   );
+
+  factory Product.fromJson(Map<String, dynamic> json) {
+    return Product(
+      id: json['_id']?.toString() ?? json['id']?.toString() ?? '',
+      name: json['name']?.toString() ?? 'Product',
+      imageUrl: json['imageUrl']?.toString() ?? 'https://picsum.photos/400/300',
+      description: json['description']?.toString() ?? '',
+      price: (json['price'] ?? 0).toDouble(),
+      discountedPrice: json['discountedPrice'] != null ? (json['discountedPrice']).toDouble() : null,
+      offerBadge: json['offerBadge']?.toString(),
+      benefits: json['benefits'] != null ? List<String>.from(json['benefits']) : [],
+      testimonials: (json['testimonials'] as List? ?? []).map((t) => Testimonial.fromJson(t)).toList(),
+      ctaLabel: json['ctaLabel']?.toString() ?? 'Learn More',
+      category: json['category']?.toString() ?? '',
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : DateTime.now(),
+    );
+  }
 }

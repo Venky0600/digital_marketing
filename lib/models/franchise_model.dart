@@ -60,4 +60,36 @@ class Franchise {
     totalOutlets: totalOutlets ?? this.totalOutlets,
     createdAt: createdAt ?? this.createdAt,
   );
+
+  factory Franchise.fromJson(Map<String, dynamic> json) {
+    return Franchise(
+      id: json['_id']?.toString() ?? json['id']?.toString() ?? '',
+      brandName: json['brandName']?.toString() ?? 'Unknown Brand',
+      imageUrl: json['imageUrl']?.toString() ?? 'https://picsum.photos/400/250',
+      investmentRequired: (json['investmentRequired'] ?? 0).toDouble(),
+      expectedProfit: (json['expectedProfit'] ?? 0).toDouble(),
+      locationAvailability: json['locationAvailability']?.toString() ?? '',
+      category: json['category']?.toString() ?? '',
+      supportProvided: json['supportProvided'] != null ? List<String>.from(json['supportProvided']) : [],
+      contactEmail: json['contactEmail']?.toString() ?? '',
+      description: json['description']?.toString() ?? '',
+      established: (json['established'] ?? 0) as int,
+      totalOutlets: (json['totalOutlets'] ?? 0) as int,
+      createdAt: json['createdAt'] != null ? DateTime.parse(json['createdAt']) : DateTime.now(),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'brandName': brandName,
+    'imageUrl': imageUrl,
+    'investmentRequired': investmentRequired,
+    'expectedProfit': expectedProfit,
+    'locationAvailability': locationAvailability,
+    'category': category,
+    'supportProvided': supportProvided,
+    'contactEmail': contactEmail,
+    'description': description,
+    'established': established,
+    'totalOutlets': totalOutlets,
+  };
 }

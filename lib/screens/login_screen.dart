@@ -78,22 +78,15 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
       // Save token for persistent session
       await AuthService.saveToken(token, userData['id'], roleString);
       
+      if (!mounted) return;
       final provider = context.read<AppProvider>();
+      provider.login(AppUser.fromJson(userData));
       
-      provider.login(AppUser(
-        name: userData['fullName'] ?? 'User',
-        email: userData['email'] ?? _emailCtrl.text.trim(),
-        avatarUrl: userData['avatarUrl'] ?? 'https://i.pravatar.cc/300',
-        role: _selectedRole!,
-        company: userData['company'],
-        niche: userData['niche'],
-      ));
-      
-      if (mounted) {
-        Navigator.pushReplacementNamed(context, '/home');
-      }
+      Navigator.pushReplacementNamed(context, '/home');
     } catch (e) {
-      setState(() => _errorMessage = e.toString().replaceAll('Exception: ', ''));
+      if (mounted) {
+        setState(() => _errorMessage = e.toString().replaceAll('Exception: ', ''));
+      }
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
@@ -141,10 +134,18 @@ class _LoginScreenState extends State<LoginScreen> with TickerProviderStateMixin
                   borderRadius: BorderRadius.circular(22),
                   boxShadow: [BoxShadow(color: const Color(0xFF5C6BC0).withOpacity(0.4), blurRadius: 20, offset: const Offset(0, 8))],
                 ),
-                child: const Center(child: Text('BB', style: TextStyle(color: Colors.white, fontSize: 32, fontWeight: FontWeight.w900, letterSpacing: -1))),
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.15),
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: Colors.white.withOpacity(0.3)),
+                  ),
+                  child: const Icon(Icons.rocket_launch_rounded, color: Colors.white, size: 36),
+                ),
               ),
               const SizedBox(height: 20),
-              Text('Welcome to Digital_Marketing', style: GoogleFonts.poppins(
+              Text('Digital_Marketing', style: GoogleFonts.poppins(
                 fontSize: 26, fontWeight: FontWeight.w800,
                 color: isDark ? Colors.white : const Color(0xFF1A1A2E))),
               const SizedBox(height: 6),
