@@ -8,6 +8,7 @@ import '../models/product_model.dart';
 import '../models/chat_message_model.dart';
 import '../models/notification_model.dart';
 import '../models/personal_brand_model.dart';
+import '../models/marketing_service_model.dart';
 
 class ApiService {
   // Use 10.0.2.2 for Android emulator, 127.0.0.1 for iOS simulator or Windows
@@ -92,7 +93,10 @@ class ApiService {
     final headers = await _getHeaders();
     final response = await http.get(Uri.parse('$baseUrl/influencers'), headers: headers);
     if (response.statusCode == 200) {
-      final List<dynamic> jsonList = json.decode(response.body);
+      final decoded = json.decode(response.body);
+      final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
+          ? decoded['data'] 
+          : (decoded as List<dynamic>);
       return jsonList.map((json) => Influencer(
         id: json['_id'],
         name: json['name'],
@@ -129,7 +133,10 @@ class ApiService {
     final headers = await _getHeaders();
     final response = await http.get(Uri.parse('$baseUrl/campaigns'), headers: headers);
     if (response.statusCode == 200) {
-      final List<dynamic> jsonList = json.decode(response.body);
+      final decoded = json.decode(response.body);
+      final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
+          ? decoded['data'] 
+          : (decoded as List<dynamic>);
       return jsonList.map((json) => Campaign(
         id: json['_id'],
         businessName: json['businessName'],
@@ -176,7 +183,10 @@ class ApiService {
     final headers = await _getHeaders();
     final response = await http.get(Uri.parse('$baseUrl/franchises'), headers: headers);
     if (response.statusCode == 200) {
-      final List<dynamic> jsonList = json.decode(response.body);
+      final decoded = json.decode(response.body);
+      final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
+          ? decoded['data'] 
+          : (decoded as List<dynamic>);
       return jsonList.map((json) => Franchise(
         id: json['_id'],
         brandName: json['brandName'],
@@ -202,7 +212,10 @@ class ApiService {
     final headers = await _getHeaders();
     final response = await http.get(Uri.parse('$baseUrl/products'), headers: headers);
     if (response.statusCode == 200) {
-      final List<dynamic> jsonList = json.decode(response.body);
+      final decoded = json.decode(response.body);
+      final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
+          ? decoded['data'] 
+          : (decoded as List<dynamic>);
       return jsonList.map((json) => Product(
         id: json['_id'],
         name: json['name'],
@@ -229,7 +242,10 @@ class ApiService {
     final headers = await _getHeaders();
     final response = await http.get(Uri.parse('$baseUrl/chat'), headers: headers);
     if (response.statusCode == 200) {
-      final List<dynamic> jsonList = json.decode(response.body);
+      final decoded = json.decode(response.body);
+      final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
+          ? decoded['data'] 
+          : (decoded as List<dynamic>);
       return jsonList.map((json) => ChatMessage(
         id: json['_id'],
         senderId: json['senderId'],
@@ -264,7 +280,10 @@ class ApiService {
     final headers = await _getHeaders();
     final response = await http.get(Uri.parse('$baseUrl/notifications'), headers: headers);
     if (response.statusCode == 200) {
-      final List<dynamic> jsonList = json.decode(response.body);
+      final decoded = json.decode(response.body);
+      final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
+          ? decoded['data'] 
+          : (decoded as List<dynamic>);
       return jsonList.map((json) => AppNotification(
         id: json['_id'],
         title: json['title'],
@@ -312,6 +331,21 @@ class ApiService {
       );
     } else {
       throw Exception('Failed to load personal brand');
+    }
+  }
+
+  // --- Marketing Services ---
+  static Future<List<MarketingService>> getMarketingServices() async {
+    final headers = await _getHeaders();
+    final response = await http.get(Uri.parse('$baseUrl/marketing-services'), headers: headers);
+    if (response.statusCode == 200) {
+      final decoded = json.decode(response.body);
+      final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
+          ? decoded['data'] 
+          : (decoded as List<dynamic>);
+      return jsonList.map((json) => MarketingService.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to load marketing services');
     }
   }
 }

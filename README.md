@@ -54,6 +54,10 @@ A production-ready marketplace platform connecting **Businesses**, **Influencers
 - Post and manage **campaigns**
 - Browse and filter **influencers** by niche, location, platform, price
 - Explore **franchise** opportunities with investment filters
+- **Marketing Services Marketplace**: Buy and sell SEO, promotions, and branding services.
+- **Push Notifications**: Real-time Firebase Cloud Messaging for alerts.
+- **Video Calling**: High-quality integrated video calls using ZegoCloud.
+- **Payment Gateway**: Secure Razorpay integration for premium purchases.
 - **AI-powered matching** via Google Gemini
 - **Real-time chat** with Socket.io (typing indicators, online status)
 - **Analytics dashboard** with live MongoDB aggregation
@@ -236,11 +240,7 @@ Query params: `keyword`, `location`, `niche`, `platform`, `minPrice`, `maxPrice`
 ---
 
 ## 🔮 Future Enhancements
-- Firebase Cloud Messaging (push notifications)
-- Payment gateway integration (Razorpay/Stripe)
-- Video call integration for influencer meetings
 - Multi-language support (i18n)
-- Campaign analytics with conversion tracking
 - Automated influencer-campaign matching (ML model)
 - CI/CD pipeline with GitHub Actions
 - Docker containerization

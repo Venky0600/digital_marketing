@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
   company:   { type: String },  // For business owners
   niche:     { type: String },  // For influencers
   avatarUrl: { type: String },
+  fcmToken:  { type: String },
   isBlocked: { type: Boolean, default: false },
 }, { timestamps: true });
 

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../providers/app_provider.dart';
 import '../services/api_service.dart';
 import '../services/auth_service.dart';
+import 'package:shimmer/shimmer.dart';
 
 class AnalyticsDashboardScreen extends StatefulWidget {
   const AnalyticsDashboardScreen({super.key});
@@ -94,7 +95,7 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen>
         ],
       ),
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? _buildSkeletonLoader(isDark)
           : _error != null
               ? _buildError(isDark)
               : RefreshIndicator(
@@ -139,6 +140,36 @@ class _AnalyticsDashboardScreenState extends State<AnalyticsDashboardScreen>
           label: const Text('Retry'),
         ),
       ]),
+    );
+  }
+
+  Widget _buildSkeletonLoader(bool isDark) {
+    return Shimmer.fromColors(
+      baseColor: isDark ? Colors.grey[800]! : Colors.grey[300]!,
+      highlightColor: isDark ? Colors.grey[700]! : Colors.grey[100]!,
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(height: 24, width: 150, color: Colors.white, margin: const EdgeInsets.only(bottom: 12)),
+            GridView.builder(
+              physics: const NeverScrollableScrollPhysics(),
+              shrinkWrap: true,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, crossAxisSpacing: 12, mainAxisSpacing: 12, childAspectRatio: 1.5,
+              ),
+              itemCount: 4,
+              itemBuilder: (_, i) => Container(
+                decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(18)),
+              ),
+            ),
+            const SizedBox(height: 24),
+            Container(height: 24, width: 150, color: Colors.white, margin: const EdgeInsets.only(bottom: 12)),
+            Container(height: 100, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(14))),
+          ],
+        ),
+      ),
     );
   }
 

@@ -30,6 +30,8 @@ const personalBrandRoutes = require('./routes/personal-brand');
 const aiRoutes          = require('./routes/ai');
 const adminRoutes       = require('./routes/admin');
 const analyticsRoutes   = require('./routes/analytics');
+const marketingServicesRoutes = require('./routes/marketing-services');
+const paymentsRoutes      = require('./routes/payments');
 
 const app    = express();
 const server = http.createServer(app);
@@ -138,6 +140,8 @@ app.use('/api/personal-brand',personalBrandRoutes);
 app.use('/api/ai',            aiRoutes);
 app.use('/api/admin',         adminRoutes);
 app.use('/api/analytics',     analyticsRoutes);
+app.use('/api/marketing-services', marketingServicesRoutes);
+app.use('/api/payments',      paymentsRoutes);
 
 // ── Centralized Error Handler ─────────────────────────────────────────────────
 app.use(errorHandler);

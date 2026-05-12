@@ -12,9 +12,11 @@ import 'screens/signup_screen.dart';
 import 'screens/main_navigation.dart';
 import 'screens/real_time_chat_screen.dart';
 import 'screens/analytics_screen.dart';
+import 'services/notification_service.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await NotificationService.initialize();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

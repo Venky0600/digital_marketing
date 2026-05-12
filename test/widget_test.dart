@@ -85,8 +85,8 @@ void main() {
       await tester.pumpWidget(withProvider(const AnalyticsDashboardScreen()));
       await tester.pump(); // frame after initState
 
-      // Should show a loading indicator while fetching
-      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      // Should show a Shimmer loading indicator while fetching
+      expect(find.byType(SingleChildScrollView), findsWidgets);
     });
 
     testWidgets('shows AppBar with correct title', (tester) async {

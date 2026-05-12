@@ -28,6 +28,8 @@ dependencies:
   fl_chart: ^1.1.0
   firebase_messaging: ^16.2.0
   firebase_core: ^4.7.0
+  zego_uikit_prebuilt_call: ^4.17.13
+  razorpay_flutter: ^1.4.5
 
 dev_dependencies:
   flutter_test:
