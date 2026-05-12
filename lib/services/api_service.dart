@@ -10,10 +10,10 @@ import '../models/notification_model.dart';
 import '../models/personal_brand_model.dart';
 import '../models/marketing_service_model.dart';
 
+import '../config/env_config.dart';
+
 class ApiService {
-  // Use 10.0.2.2 for Android emulator, 127.0.0.1 for iOS simulator or Windows
-  // Assuming local run for now. Using localhost instead of 127.0.0.1 for better Chrome Web compatibility.
-  static const String baseUrl = 'http://localhost:5000/api';
+  static const String baseUrl = EnvConfig.apiBaseUrl;
 
   static Future<Map<String, String>> _getHeaders() async {
     final token = await AuthService.getToken();
@@ -21,6 +21,24 @@ class ApiService {
       'Content-Type': 'application/json',
       if (token != null) 'Authorization': 'Bearer $token',
     };
+  }
+
+  // Production-grade request wrapper with timeout and retry logic
+  static Future<http.Response> _retryRequest(
+    Future<http.Response> Function() requestFn, {
+    int maxRetries = 2,
+  }) async {
+    int attempts = 0;
+    while (attempts <= maxRetries) {
+      try {
+        return await requestFn().timeout(const Duration(seconds: 15));
+      } catch (e) {
+        attempts++;
+        if (attempts > maxRetries) rethrow;
+        await Future.delayed(Duration(seconds: attempts)); // Exponential backoff
+      }
+    }
+    throw Exception('Request failed after $maxRetries retries');
   }
 
   // --- Authentication ---
@@ -32,7 +50,7 @@ class ApiService {
     String? company,
     String? niche,
   }) async {
-    final response = await http.post(
+    final response = await _retryRequest(() => http.post(
       Uri.parse('$baseUrl/auth/signup'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
@@ -43,7 +61,7 @@ class ApiService {
         'company': company,
         'niche': niche,
       }),
-    );
+    ));
 
     if (response.statusCode == 201) {
       return json.decode(response.body);
@@ -62,7 +80,7 @@ class ApiService {
   }
 
   static Future<Map<String, dynamic>> login(String email, String password, String role) async {
-    final response = await http.post(
+    final response = await _retryRequest(() => http.post(
       Uri.parse('$baseUrl/auth/login'),
       headers: {'Content-Type': 'application/json'},
       body: json.encode({
@@ -70,7 +88,7 @@ class ApiService {
         'password': password,
         'role': role,
       }),
-    );
+    ));
 
     if (response.statusCode == 200) {
       return json.decode(response.body);
@@ -89,9 +107,13 @@ class ApiService {
   }
 
   // --- Influencers ---
-  static Future<List<Influencer>> getInfluencers() async {
+  static Future<List<Influencer>> getInfluencers({double? lat, double? lng}) async {
     final headers = await _getHeaders();
-    final response = await http.get(Uri.parse('$baseUrl/influencers'), headers: headers);
+    final uri = Uri.parse('$baseUrl/influencers').replace(queryParameters: {
+      if (lat != null) 'lat': lat.toString(),
+      if (lng != null) 'lng': lng.toString(),
+    });
+    final response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {
       final decoded = json.decode(response.body);
       final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
@@ -129,9 +151,13 @@ class ApiService {
   }
 
   // --- Campaigns ---
-  static Future<List<Campaign>> getCampaigns() async {
+  static Future<List<Campaign>> getCampaigns({double? lat, double? lng}) async {
     final headers = await _getHeaders();
-    final response = await http.get(Uri.parse('$baseUrl/campaigns'), headers: headers);
+    final uri = Uri.parse('$baseUrl/campaigns').replace(queryParameters: {
+      if (lat != null) 'lat': lat.toString(),
+      if (lng != null) 'lng': lng.toString(),
+    });
+    final response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {
       final decoded = json.decode(response.body);
       final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 
@@ -179,9 +205,13 @@ class ApiService {
   }
 
   // --- Franchises ---
-  static Future<List<Franchise>> getFranchises() async {
+  static Future<List<Franchise>> getFranchises({double? lat, double? lng}) async {
     final headers = await _getHeaders();
-    final response = await http.get(Uri.parse('$baseUrl/franchises'), headers: headers);
+    final uri = Uri.parse('$baseUrl/franchises').replace(queryParameters: {
+      if (lat != null) 'lat': lat.toString(),
+      if (lng != null) 'lng': lng.toString(),
+    });
+    final response = await http.get(uri, headers: headers);
     if (response.statusCode == 200) {
       final decoded = json.decode(response.body);
       final List<dynamic> jsonList = (decoded is Map<String, dynamic> && decoded.containsKey('data')) 

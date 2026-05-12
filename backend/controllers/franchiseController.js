@@ -8,10 +8,21 @@ const getFranchises = asyncHandler(async (req, res) => {
   const page  = parseInt(req.query.page)  || 1;
   const limit = parseInt(req.query.limit) || 20;
   const skip  = (page - 1) * limit;
+  const { lat, lng } = req.query;
+
+  const filter = {};
+  if (lat && lng) {
+    filter.location_coords = {
+      $near: {
+        $geometry: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },
+        $maxDistance: 100000 // 100km for franchises
+      }
+    };
+  }
 
   const [data, total] = await Promise.all([
-    Franchise.find().sort({ createdAt: -1 }).skip(skip).limit(limit),
-    Franchise.countDocuments()
+    Franchise.find(filter).sort({ createdAt: -1 }).skip(skip).limit(limit),
+    Franchise.countDocuments(filter)
   ]);
 
   res.json({ data, page, limit, total, pages: Math.ceil(total / limit) });
@@ -21,9 +32,19 @@ const getFranchises = asyncHandler(async (req, res) => {
 // @route   GET /api/franchises/search
 // @access  Private
 const searchFranchises = asyncHandler(async (req, res) => {
-  const { keyword, location, category, minInvestment, maxInvestment, page = 1, limit = 20 } = req.query;
+  const { keyword, location, category, minInvestment, maxInvestment, lat, lng, page = 1, limit = 20 } = req.query;
 
   const filter = {};
+  
+  if (lat && lng) {
+    filter.location_coords = {
+      $near: {
+        $geometry: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },
+        $maxDistance: 100000
+      }
+    };
+  }
+
   if (keyword) {
     filter.$or = [
       { brandName:   { $regex: keyword, $options: 'i' } },

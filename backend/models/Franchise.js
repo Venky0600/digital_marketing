@@ -12,7 +12,13 @@ const franchiseSchema = new mongoose.Schema({
   description: { type: String, required: true },
   established: { type: Number, required: true },
   totalOutlets: { type: Number, required: true },
+  location_coords: {
+    type: { type: String, enum: ['Point'], default: 'Point' },
+    coordinates: { type: [Number], default: [0, 0] }
+  },
   createdAt: { type: Date, default: Date.now },
 });
+
+franchiseSchema.index({ location_coords: '2dsphere' });
 
 module.exports = mongoose.model('Franchise', franchiseSchema);

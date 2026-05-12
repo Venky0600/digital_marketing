@@ -13,7 +13,13 @@ const influencerSchema = new mongoose.Schema({
   rating: { type: Number, required: true },
   previousWorks: [{ type: String }],
   isVerified: { type: Boolean, default: false },
+  location_coords: {
+    type: { type: String, enum: ['Point'], default: 'Point' },
+    coordinates: { type: [Number], default: [0, 0] }
+  },
   createdAt: { type: Date, default: Date.now },
 });
+
+influencerSchema.index({ location_coords: '2dsphere' });
 
 module.exports = mongoose.model('Influencer', influencerSchema);

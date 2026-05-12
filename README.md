@@ -52,20 +52,24 @@ A production-ready marketplace platform connecting **Businesses**, **Influencers
 
 ### 📣 Core Features (v1.1+)
 - **Premium Multi-Role Auth**: Custom onboarding and role selection (Business/Influencer/Franchise).
-- **Real GPS Discovery 📍**: Integrated `geolocator` for nearby campaign and franchise matching.
-- **Full i18n Support 🌐**: Localized in **English, Telugu, and Hindi** via `.arb` files and `LocaleProvider`.
+- **GPS-Powered Discovery 📍**: Real-time coordinate-based search for campaigns and franchises.
+- **Full i18n Support 🌐**: Localized in **English, Telugu, and Hindi** for global scalability.
 - **Marketing Services Marketplace**: Buy and sell SEO, promotions, and branding services.
-- **Push Notifications**: Real-time Firebase Cloud Messaging for alerts.
-- **Video Calling**: High-quality integrated video calls using ZegoCloud.
-- **Payment Gateway**: Secure Razorpay integration for premium purchases.
-- **Social Media Hub 📊**: Abstraction layer for Instagram, YouTube, and Facebook analytics.
-- **Real-time chat** with Socket.io (typing indicators, online status)
-- **Analytics dashboard** with live MongoDB aggregation and professional skeleton loaders.
+- **Push Notifications**: Real-time Firebase Cloud Messaging architecture.
+- **Real-time Communication**: Direct chat with Socket.io (typing indicators, online status).
+- **Video Collaboration**: Integrated video calling infrastructure using ZegoCloud.
 
-### 🤖 Future Roadmap (Scaffolded Modules)
-- **AI Marketing Engine (Gemini)**: Future integration for automated campaign strategy generation and influencer matching.
-- **Global Deployment**: Multi-currency support and expanded localization.
-- **Automated Verification**: Social media account linking and automatic badge issuance.
+### 🏗️ Future-Ready Modular Architecture
+The platform is built with a highly scalable, service-oriented architecture designed for easy expansion:
+- **AI Recommendation Engine**: Scaffolded Gemini integration for automated strategy and matching.
+- **Payment Abstraction Layer**: Secure modular infrastructure ready for Razorpay/Stripe integration.
+- **Advanced Analytics Infrastructure**: Future-ready dashboard with live MongoDB aggregation pipelines.
+- **Scaffolded Expansion Support**: Modular service layer for adding new platform features with zero downtime.
+
+### 🤖 AI Integration (Modular Roadmap)
+- **Scaffolded AI Chat**: Architecture ready for Google Gemini integration.
+- **Recommendation Engine**: Planned logic for automated influencer-business matching.
+- **Campaign Analysis**: Future-scope module for AI-driven strategy improvement.
 
 ### 📊 Analytics
 - Total users, campaigns, influencers, franchises

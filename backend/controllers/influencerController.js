@@ -21,9 +21,19 @@ const getInfluencers = asyncHandler(async (req, res) => {
 // @route   GET /api/influencers/search
 // @access  Private
 const searchInfluencers = asyncHandler(async (req, res) => {
-  const { keyword, location, niche, platform, minPrice, maxPrice, page = 1, limit = 20 } = req.query;
+  const { keyword, location, niche, platform, minPrice, maxPrice, lat, lng, page = 1, limit = 20 } = req.query;
 
   const filter = {};
+  
+  if (lat && lng) {
+    filter.location_coords = {
+      $near: {
+        $geometry: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },
+        $maxDistance: 50000 // 50km
+      }
+    };
+  }
+
   if (keyword) {
     filter.$or = [
       { name:     { $regex: keyword, $options: 'i' } },

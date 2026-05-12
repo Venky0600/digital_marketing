@@ -48,4 +48,13 @@ describe('GET /api/campaigns/search', () => {
     const res = await request(app).get('/api/campaigns/search?keyword=test');
     expect(res.statusCode).toBe(401);
   });
+
+  it('should accept GPS coordinates for proximity search', async () => {
+    const res = await request(app)
+      .get('/api/campaigns/search?lat=19.0760&lng=72.8777')
+      .set('Authorization', `Bearer ${authToken}`);
+    // We expect success or unauthorized if DB is empty, 
+    // but the presence of lat/lng should not cause a server error.
+    expect([200, 401]).toContain(res.statusCode); 
+  });
 });

@@ -23,9 +23,18 @@ const getCampaigns = asyncHandler(async (req, res) => {
 // @route   GET /api/campaigns/search
 // @access  Private
 const searchCampaigns = asyncHandler(async (req, res) => {
-  const { keyword, location, category, minBudget, maxBudget, page = 1, limit = 20 } = req.query;
+  const { keyword, location, category, minBudget, maxBudget, lat, lng, page = 1, limit = 20 } = req.query;
 
   const filter = {};
+
+  if (lat && lng) {
+    filter.location_coords = {
+      $near: {
+        $geometry: { type: 'Point', coordinates: [parseFloat(lng), parseFloat(lat)] },
+        $maxDistance: 50000 // 50km
+      }
+    };
+  }
 
   if (keyword) {
     filter.$or = [
@@ -65,6 +74,14 @@ function buildFilter(query) {
   const filter = {};
   if (query.location) filter.location = { $regex: query.location, $options: 'i' };
   if (query.category) filter.category = { $regex: query.category, $options: 'i' };
+  if (query.lat && query.lng) {
+    filter.location_coords = {
+      $near: {
+        $geometry: { type: 'Point', coordinates: [parseFloat(query.lng), parseFloat(query.lat)] },
+        $maxDistance: 50000
+      }
+    };
+  }
   return filter;
 }
 

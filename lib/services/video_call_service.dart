@@ -11,14 +11,14 @@
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
 import '../screens/video_call_screen.dart';
+import '../config/env_config.dart';
 
 class VideoCallService {
   static const _uuid = Uuid();
 
-  // IMPORTANT: Replace these with your actual ZegoCloud credentials
-  // from https://console.zegocloud.com/
-  static const int zegoAppId = 0; // PLACEHOLDER — set via .env in production
-  static const String zegoAppSign = ''; // PLACEHOLDER — set via .env in production
+  // Credentials are now securely managed in EnvConfig
+  static const int zegoAppId = EnvConfig.zegoAppId;
+  static const String zegoAppSign = EnvConfig.zegoAppSign;
 
   /// Generates a unique room/call ID for a 1-on-1 call between two users.
   static String generateCallId(String userId1, String userId2) {
